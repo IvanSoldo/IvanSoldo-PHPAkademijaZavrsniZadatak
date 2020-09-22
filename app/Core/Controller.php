@@ -4,14 +4,6 @@ namespace App\Core;
 
 class Controller {
 
-    public function model($model) { //TODO: U repository Core class
-
-        require_once '..app/Model/' . $model . '.php';
-        $className = "\\App\\Model\\" . $model . '()';
-        return new $className;
-
-    }
-
     public function view($view, $data =[]) {
 
         if (file_exists('../app/View/' . $view . '.phtml')) {
@@ -19,7 +11,16 @@ class Controller {
         } else {
             die('View does not exist'); //TODO: Redirect
         }
+    }
 
+    protected function isPost(): bool //TODO: U validate helper klasu.
+    {
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+
+    protected function isGet(): bool
+    {
+        return $_SERVER['REQUEST_METHOD'] === 'GET';
     }
 
 }

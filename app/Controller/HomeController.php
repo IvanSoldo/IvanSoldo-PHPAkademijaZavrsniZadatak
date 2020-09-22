@@ -3,17 +3,14 @@
 namespace App\Controller;
 
 use App\Core\Controller;
+use App\Core\Database;
+
 
 class HomeController extends Controller{
 
-    public function __construct() {
-
-    }
-
     public function indexAction() {
-        $data = ['title' => 'Welcome'];
-        $this->view('Home/index', $data);
-
+        $this->view('Home/index');
+        $db = Database::getInstance();
     }
 
     public function aboutAction() {

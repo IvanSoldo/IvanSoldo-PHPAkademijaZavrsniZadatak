@@ -1,6 +1,7 @@
 <?php
 
 require_once  'Util/utilities.php';
+require_once 'Config/config.php';
 
 //Autoload Core
 
