@@ -11,6 +11,7 @@ spl_autoload_register(function ($className) {
     unset($filename[0]);
     $filename = implode('/', $filename);
     require $filename;
+
 });
 
 

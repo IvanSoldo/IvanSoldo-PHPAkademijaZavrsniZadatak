@@ -8,7 +8,6 @@ class Router {
     protected $currentMethod = 'indexAction';
     protected $params = [];
 
-
     public function __construct() {
         $url = $this->getUrl();
         if (file_exists('../app/Controller/' . ucwords($url[0]) . 'Controller.php')) {

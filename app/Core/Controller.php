@@ -13,7 +13,7 @@ class Controller {
         }
     }
 
-    protected function isPost(): bool //TODO: U validate helper klasu.
+    protected function isPost(): bool
     {
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }

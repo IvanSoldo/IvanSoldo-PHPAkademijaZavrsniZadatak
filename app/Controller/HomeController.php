@@ -3,18 +3,23 @@
 namespace App\Controller;
 
 use App\Core\Controller;
-use App\Core\Database;
 
+//TODO: add htmlspeacialchars to input fields/textarea
 
 class HomeController extends Controller{
 
     public function indexAction() {
+
         $this->view('Home/index');
-        $db = Database::getInstance();
+
     }
 
     public function aboutAction() {
         $this->view('Home/about');
+    }
+
+    public function contactAction() {
+        $this->view('Home/contact');
     }
 
 
