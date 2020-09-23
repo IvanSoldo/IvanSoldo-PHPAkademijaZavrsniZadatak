@@ -16,7 +16,7 @@ class Database extends \PDO {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbName . ';charset=utf8';
         parent::__construct($dsn, $this->user, $this->password);
 
-        $this->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE,\PDO::FETCH_ASSOC);
+        $this->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
     }
 
     private function __clone()
