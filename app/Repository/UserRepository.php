@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Model\User;
 use App\Core\Database;
+use App\Model\Address;
 
 class UserRepository
 {
@@ -14,9 +15,7 @@ class UserRepository
 
         $db = Database::getInstance();
         $statement = $db->prepare('select id from user where email = (?)', [$email]);
-        $statement->execute([
-            $email
-        ]);
+        $statement->execute([$email]);
         $fetched = $statement->rowCount();
         return (bool)$fetched;
 
@@ -27,30 +26,14 @@ class UserRepository
 
         $db = Database::getInstance();
         $statement = $db->prepare('select id from user where username = (?)', [$username]);
-        $statement->execute([
-            $username
-        ]);
-        $fetched = $statement->rowCount();
-        return (bool)$fetched;
-
-    }
-
-    public function doesCountryExist($country)
-    {
-
-        $db = Database::getInstance();
-        $statement = $db->prepare('select name from country where name = (?)', [$country]);
-        $statement->execute([
-            $country
-        ]);
+        $statement->execute([$username]);
         $fetched = $statement->rowCount();
         return (bool)$fetched;
 
     }
 
 
-
-    public function getUserByUsername($username)
+/*    public function getUserByUsername($username)
     {
         $newUser ='';
         $db = Database::getInstance();
@@ -73,6 +56,18 @@ class UserRepository
                 $user->postalCode, $user->address, $user->role);
         }
         return $newUser;
+
+    } */
+
+    public function insertAddress(Address $address)
+    {
+        $db = Db::getInstance();
+        $statement = $db->prepare('INSERT into address (city_name, postal_code, addres) values (:city_name, :postal_code, :address)');
+        $statement->bindValue('city_name', $address->getCity());
+        $statement->bindValue('postal_code',$address->getPostalCode());
+        $statement->bindValue('address',$address->getAddress());
+
+        $statement->execute();
 
     }
 

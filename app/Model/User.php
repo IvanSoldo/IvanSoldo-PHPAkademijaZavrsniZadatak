@@ -10,10 +10,8 @@ class User
     private $lastName;
     private $password;
     private $country;
-    private $city;
-    private $postalCode;
-    private $address;
     private $role;
+    private $address;
 
     /**
      * User constructor.
@@ -23,12 +21,10 @@ class User
      * @param $lastName
      * @param $password
      * @param $country
-     * @param $city
-     * @param $postalCode
-     * @param $address
      * @param $role
+     * @param Address $address
      */
-    public function __construct($email, $username, $firstName, $lastName, $password, $country, $city, $postalCode, $address, $role)
+    public function __construct($email, $username, $firstName, $lastName, $password, $country, $role, Address $address)
     {
         $this->email = $email;
         $this->username = $username;
@@ -36,31 +32,9 @@ class User
         $this->lastName = $lastName;
         $this->password = $password;
         $this->country = $country;
-        $this->city = $city;
-        $this->postalCode = $postalCode;
+        $this->role = $role;
         $this->address = $address;
-        $this->role = $role;
     }
-
-
-    /**
-     * @return mixed
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
-     * @param mixed $role
-     */
-    public function setRole($role): void
-    {
-        $this->role = $role;
-    }
-
-
-
 
     /**
      * @return mixed
@@ -161,47 +135,31 @@ class User
     /**
      * @return mixed
      */
-    public function getCity()
+    public function getRole()
     {
-        return $this->city;
+        return $this->role;
     }
 
     /**
-     * @param mixed $city
+     * @param mixed $role
      */
-    public function setCity($city): void
+    public function setRole($role): void
     {
-        $this->city = $city;
+        $this->role = $role;
     }
 
     /**
-     * @return mixed
+     * @return Address
      */
-    public function getPostalCode()
-    {
-        return $this->postalCode;
-    }
-
-    /**
-     * @param mixed $postalCode
-     */
-    public function setPostalCode($postalCode): void
-    {
-        $this->postalCode = $postalCode;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAddress()
+    public function getAddress(): Address
     {
         return $this->address;
     }
 
     /**
-     * @param mixed $address
+     * @param Address $address
      */
-    public function setAddress($address): void
+    public function setAddress(Address $address): void
     {
         $this->address = $address;
     }
