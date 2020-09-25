@@ -10,7 +10,15 @@ class AdminController extends Controller
 
     public function indexAction()
     {
-        $this->view('Admin/index');
+        if(!array_key_exists('role', $_SESSION)) {
+            $this->view('Home/index');
+
+        } else if ($_SESSION['role'] != 'admin') {
+            $this->view('Home/index');
+        } else {
+            $this->view('Admin/index');
+        }
+
     }
 
     public function addAdminAction()
@@ -62,7 +70,14 @@ class AdminController extends Controller
                 'addressError' => ''
             ];
 
-            $this->view('Admin/addAdmin', $data);
+            if(!array_key_exists('role', $_SESSION)) {
+                $this->view('Home/index');
+
+            } else if ($_SESSION['role'] != 'admin') {
+                $this->view('Home/index');
+            } else {
+                $this->view('Admin/addAdmin');
+            }
         }
     }
 
