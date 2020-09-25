@@ -4,6 +4,8 @@ namespace App\Core;
 
 class Controller {
 
+    //TODO: add default indexAction
+
     public function view($view, $data =[]) {
 
         if (file_exists('../app/View/' . $view . '.phtml')) {

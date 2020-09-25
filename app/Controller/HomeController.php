@@ -7,6 +7,7 @@ use App\Core\Controller;
 
 
 //TODO: add htmlspeacialchars to input fields/textarea
+//TODO: prevent manual typing of User/login if already logged in
 
 class HomeController extends Controller{
 

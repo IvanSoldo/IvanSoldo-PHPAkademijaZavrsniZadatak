@@ -21,9 +21,9 @@
 
         <ul class="navbar-nav ml-auto">
             <?php if(isset($_SESSION['username'])) : ?>
-                <?php if ($_SESSION['role'] === 'admin') : ?>
+                <?php if ($_SESSION['role'] == 'admin') : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= URLROOT ?>/Admin/dashboard">Dashboard </a>
+                    <a class="nav-link" href="<?= URLROOT ?>/Admin/index">Dashboard </a>
                 </li>
                 <?php endif; ?>
                 <li class="nav-item">
@@ -39,7 +39,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="<?=URLROOT ?>/User/login">Login</a>
             </li>
-
             <?php endif; ?>
         </ul>
     </div>
