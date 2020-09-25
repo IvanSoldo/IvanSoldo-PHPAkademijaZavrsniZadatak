@@ -91,7 +91,6 @@ class UserRepository {
 
         $statement->execute([$username]);
 
-
         $user = $statement->fetch();
         $user = new User([
                 'email' => $user->email,
@@ -106,6 +105,15 @@ class UserRepository {
             ]);
 
         return $user;
+    }
+
+    public function updatePassword($password, $username) {
+
+        $db = Database::getInstance();
+        $statement = $db->prepare('UPDATE user SET password=:password WHERE username=:username;');
+        $statement->bindValue('password', $password);
+        $statement->bindValue('username',$username);
+        $statement->execute();
 
     }
 

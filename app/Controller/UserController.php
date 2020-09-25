@@ -117,4 +117,36 @@ class UserController extends Controller
         $this->userService->logout();
     }
 
+    public function settingsAction() {
+        if ($this->isPost()) {
+            $data = [
+                'password' => trim(Request::getPostParam('password')),
+                'confirmPassword' => trim(Request::getPostParam('confirmPassword')),
+                'passwordError' => '',
+                'confirmPasswordError' => ''
+            ];
+
+            $data = $this->userService->checkSettingsData($data);
+            if($this->userService->isSettingsDataValid($data)) {
+                $this->userService->changePassword($data);
+                flash('register_success', 'Password changed!');
+                header('location: ' . URLROOT . '/User/settings');
+            } else {
+                $this->view('User/settings',$data);
+            }
+
+        } else {
+
+            $data = [
+                'password' => '',
+                'confirmPassword' => '',
+                'passwordError' => '',
+                'confirmPasswordError' => ''
+            ];
+
+            $this->view('User/settings', $data);
+        }
+
+    }
+
 }

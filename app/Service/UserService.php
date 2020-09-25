@@ -141,5 +141,39 @@ class UserService
         header('location: ' . URLROOT . '/User/login');
     }
 
+    public function checkSettingsData($data) {
+
+        if (empty($data['password'])) {
+            $data['passwordError'] = 'Please enter password';
+        } else {
+            if (strlen($data['password']) < 6) {
+                $data['passwordError'] = 'Password must be at least 6 characters';
+            }
+        }
+
+        if (empty($data['confirmPassword'])) {
+            $data['confirmPasswordError'] = 'Please confirm your password';
+        } else {
+            if ($data['password'] != $data['confirmPassword']) {
+                $data['confirmPasswordError'] = 'Password do not match';
+            }
+        }
+        return $data;
+    }
+
+    public function isSettingsDataValid($data) {
+        if (empty($data['passwordError']) && empty($data['confirmPasswordError'])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function changePassword($data) {
+
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $this->userRepository->updatePassword($data['password'], $_SESSION['username']);
+
+    }
+
 
 }
