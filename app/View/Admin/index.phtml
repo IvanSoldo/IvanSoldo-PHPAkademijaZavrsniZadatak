@@ -1,7 +1,9 @@
-<?php require APPROOT . '/View/inc/header.phtml'?>
-<div align="center">
-    <h1>Dashboard</h1>
-</div>
+<?php require APPROOT . '/View/inc/dashboardHeader.phtml'?>
+    <div class="card card-body bg-light mt-5">
+        <h2 class="text-center">Dashboard</h2>
+        <p class="text-center">Manage your webshop with ease!</p>
+        <?php flash('register_success'); ?>
+    </div>
 
 
 <?php require APPROOT . '/View/inc/footer.phtml'?>

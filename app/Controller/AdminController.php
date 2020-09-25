@@ -4,9 +4,18 @@ namespace App\Controller;
 
 use App\Core\Controller;
 use App\Core\Request;
+use App\Service\UserService;
 
 class AdminController extends Controller
 {
+
+    private $userService;
+
+    public function __construct()
+    {
+        $this->userService = new UserService();
+
+    }
 
     public function indexAction()
     {
@@ -46,7 +55,15 @@ class AdminController extends Controller
                 'addressError' => ''
             ];
 
-            $this->view('Admin/addAdmin', $data);
+            $data = $this->userService->checkRegisterData($data);
+            if ($this->userService->isRegisterDataValid($data)) {
+                $this->userService->addAdmin($data);
+                flash('register_success', 'New Admin added!');
+                $this->view('Admin/index');
+            } else {
+                $this->view('Admin/addAdmin', $data);
+            }
+
 
         } else {
             $data = [
@@ -76,7 +93,7 @@ class AdminController extends Controller
             } else if ($_SESSION['role'] != 'admin') {
                 $this->view('Home/index');
             } else {
-                $this->view('Admin/addAdmin');
+                $this->view('Admin/addAdmin',$data);
             }
         }
     }

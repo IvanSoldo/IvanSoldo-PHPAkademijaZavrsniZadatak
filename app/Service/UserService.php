@@ -176,5 +176,13 @@ class UserService
 
     }
 
+    public function addAdmin($data)
+    {
+        $data['role'] = 1;
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $this->userRepository->insertAddress($data);
+        $this->userRepository->insertUser($data);
+    }
+
 
 }
