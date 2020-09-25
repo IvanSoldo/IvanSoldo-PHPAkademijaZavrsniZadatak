@@ -17,6 +17,10 @@ class UserController extends Controller
 
     }
 
+    public function indexAction() {
+        $this->view('Home/index');
+    }
+
     public function registerAction()
     {
         if ($this->isPost()) {
@@ -92,7 +96,7 @@ class UserController extends Controller
 
             $data = $this->userService->checkLoginData($data);
             if ($this->userService->isLoginDataValid($data)) {
-                flash('register_success', 'Welcome!');
+                flash('register_success', 'Welcome ' . $_SESSION['username'] . ' !');
                 header('location: ' . URLROOT . '/Home/index');
             } else {
                 $this->view('User/login', $data);
@@ -148,5 +152,6 @@ class UserController extends Controller
         }
 
     }
+
 
 }

@@ -8,8 +8,6 @@ class Controller {
 
         if (file_exists('../app/View/' . $view . '.phtml')) {
             require_once '../app/View/' . $view . '.phtml';
-        } else {
-            die('View does not exist'); //TODO: Redirect
         }
     }
 

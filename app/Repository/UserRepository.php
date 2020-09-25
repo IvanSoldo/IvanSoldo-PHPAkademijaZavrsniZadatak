@@ -73,7 +73,7 @@ class UserRepository {
         $statement->bindValue('lastName', $data['lastName']);
         $statement->bindValue('password', $data['password']);
         $statement->bindValue('addressId', $this->getAddressId($data));
-        $statement->bindValue('role_id', 3);
+        $statement->bindValue('role_id', $data['role']);
         $statement->execute();
 
     }

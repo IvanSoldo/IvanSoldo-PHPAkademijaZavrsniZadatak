@@ -94,6 +94,7 @@ class UserService
 
     public function register($data)
     {
+        $data['role'] = 3;
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $this->userRepository->insertAddress($data);
         $this->userRepository->insertUser($data);
