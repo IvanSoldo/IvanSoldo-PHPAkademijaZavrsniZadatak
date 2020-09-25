@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\User;
 use App\Repository\UserRepository;
 
 class UserService
@@ -86,6 +87,38 @@ class UserService
             return true;
         }
         return false;
+    }
+
+    public function register($data) {
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $this->userRepository->insertAddress($data);
+        $this->userRepository->insertUser($data);
+    }
+
+    public function checkLoginData($data) {
+
+        $user = new User();
+        if ($this->userRepository->doesUsernameExist($data['username'])) {
+            $user = $this->userRepository->getUserByUsername($data['username']);
+        } else {
+            $data['usernameError'] = 'Invalid username or password';
+            $data['passwordError'] = 'Invalid username or password';
+        }
+
+        if (!password_verify($data['password'],$user->getData('password'))) {
+            $data['usernameError'] = 'Invalid username or password';
+            $data['passwordError'] = 'Invalid username or password';
+        }
+
+        return $data;
+    }
+
+    public function isLoginDataValid($data) {
+       if (empty($data['usernameError']) && empty($data['passwordError'])) {
+           return true;
+       }
+       return false;
+
     }
 
 

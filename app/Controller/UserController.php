@@ -24,7 +24,7 @@ class UserController extends Controller
                 'email' => trim(Request::getPostParam('email')),
                 'username' =>trim(Request::getPostParam('username')),
                 'firstName' =>trim(Request::getPostParam('firstName')),
-                'lastName' =>trim(Request::getPostParam('email')),
+                'lastName' =>trim(Request::getPostParam('lastName')),
                 'password'=>trim(Request::getPostParam('password')),
                 'confirmPassword'=>trim(Request::getPostParam('confirmPassword')),
                 'city'=>trim(Request::getPostParam('city')),
@@ -43,7 +43,8 @@ class UserController extends Controller
 
             $data = $this->userService->checkRegisterData($data);
             if ($this->userService->isRegisterDataValid($data)) {
-                $this->view('User/login',$data);
+                $this->userService->register($data);
+                header('location: ' .URLROOT . '/User/login');
             } else {
                 $this->view('User/register', $data);
             }
@@ -81,7 +82,19 @@ class UserController extends Controller
     {
 
         if ($this->isPost()) {
+            $data = [
+                'username' => trim(Request::getPostParam('username')),
+                'password' => trim(Request::getPostParam('password')),
+                'usernameError' => '',
+                'passwordError' => ''
+            ];
 
+            $data = $this->userService->checkLoginData($data);
+            if ($this->userService->isLoginDataValid($data)) {
+                header('location: ' .URLROOT . '/Home/index');
+            } else {
+                $this->view('User/login', $data);
+            }
 
         } else {
             $data = [
