@@ -20,31 +20,32 @@ class UserController extends Controller
     public function registerAction()
     {
         if ($this->isPost()) {
-            $data= [
+            $data = [
                 'email' => trim(Request::getPostParam('email')),
-                'username' =>trim(Request::getPostParam('username')),
-                'firstName' =>trim(Request::getPostParam('firstName')),
-                'lastName' =>trim(Request::getPostParam('lastName')),
-                'password'=>trim(Request::getPostParam('password')),
-                'confirmPassword'=>trim(Request::getPostParam('confirmPassword')),
-                'city'=>trim(Request::getPostParam('city')),
-                'postalCode'=>trim(Request::getPostParam('postalCode')),
-                'address'=>trim(Request::getPostParam('address')),
+                'username' => trim(Request::getPostParam('username')),
+                'firstName' => trim(Request::getPostParam('firstName')),
+                'lastName' => trim(Request::getPostParam('lastName')),
+                'password' => trim(Request::getPostParam('password')),
+                'confirmPassword' => trim(Request::getPostParam('confirmPassword')),
+                'city' => trim(Request::getPostParam('city')),
+                'postalCode' => trim(Request::getPostParam('postalCode')),
+                'address' => trim(Request::getPostParam('address')),
                 'emailError' => '',
-                'usernameError' =>'',
-                'firstNameError' =>'',
-                'lastNameError' =>'',
-                'passwordError'=>'',
-                'confirmPasswordError'=>'',
-                'cityError'=>'',
-                'postalCodeError'=>'',
-                'addressError'=>''
+                'usernameError' => '',
+                'firstNameError' => '',
+                'lastNameError' => '',
+                'passwordError' => '',
+                'confirmPasswordError' => '',
+                'cityError' => '',
+                'postalCodeError' => '',
+                'addressError' => ''
             ];
 
             $data = $this->userService->checkRegisterData($data);
             if ($this->userService->isRegisterDataValid($data)) {
                 $this->userService->register($data);
-                header('location: ' .URLROOT . '/User/login');
+                flash('register_success', 'You are now registered and can log in!');
+                header('location: ' . URLROOT . '/User/login');
             } else {
                 $this->view('User/register', $data);
             }
@@ -91,7 +92,8 @@ class UserController extends Controller
 
             $data = $this->userService->checkLoginData($data);
             if ($this->userService->isLoginDataValid($data)) {
-                header('location: ' .URLROOT . '/Home/index');
+                flash('register_success', 'Welcome!');
+                header('location: ' . URLROOT . '/Home/index');
             } else {
                 $this->view('User/login', $data);
             }
@@ -105,9 +107,14 @@ class UserController extends Controller
             ];
 
 
-            $this->view('User/login',$data);
+            $this->view('User/login', $data);
         }
 
-
     }
+
+    public function logoutAction()
+    {
+        $this->userService->logout();
+    }
+
 }

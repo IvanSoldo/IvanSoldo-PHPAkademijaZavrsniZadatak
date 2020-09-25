@@ -18,7 +18,7 @@ class UserRepository {
     {
 
         $db = Database::getInstance();
-        $statement = $db->prepare('select id from user where BINARY email = (?)', [$email]);
+        $statement = $db->prepare('select id from user where email = (?)', [$email]);
         $statement->execute([$email]);
         $fetched = $statement->rowCount();
         return (bool)$fetched;
@@ -29,7 +29,7 @@ class UserRepository {
     {
 
         $db = Database::getInstance();
-        $statement = $db->prepare('select id from user where BINARY username = (?)', [$username]);
+        $statement = $db->prepare('select id from user where username = (?)', [$username]);
         $statement->execute([$username]);
         $fetched = $statement->rowCount();
         return (bool)$fetched;
@@ -87,7 +87,7 @@ class UserRepository {
             from user u
             inner join address a on u.address_id = a.id
             inner join role r on u.role_id = r.id
-            where BINARY u.username = (?)', [$username]);
+            where u.username = (?)', [$username]);
 
         $statement->execute([$username]);
 

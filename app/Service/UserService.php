@@ -9,11 +9,13 @@ class UserService
 {
 
     private $userRepository;
+    private $user;
 
 
     public function __construct()
     {
         $this->userRepository = new UserRepository();
+        $this->user = new User();
     }
 
     public function checkRegisterData($data)
@@ -56,7 +58,7 @@ class UserService
         } else {
             if ($data['password'] != $data['confirmPassword']) {
                 $data['confirmPasswordError'] = 'Password do not match';
-                }
+            }
         }
 
         if (empty($data['city'])) {
@@ -66,7 +68,7 @@ class UserService
         if (empty($data['postalCode'])) {
             $data['postalCodeError'] = 'Please enter postalCode';
         } else {
-            if (strlen($data['postalCode']) != 5 ) {
+            if (strlen($data['postalCode']) != 5) {
                 $data['postalCodeError'] = 'Please enter valid postal code';
             }
         }
@@ -79,33 +81,35 @@ class UserService
 
     }
 
-    public function isRegisterDataValid($data) {
+    public function isRegisterDataValid($data)
+    {
 
         if (empty($data['emailError']) && empty($data['usernameError']) && empty($data['firstNameError']) && empty($data['lastNameError'])
-            &&empty($data['passwordError']) &&empty($data['confirmPasswordError']) &&empty($data['cityError']) &&empty($data['postalCodeError'])
-            &&empty($data['addressError']) ) {
+            && empty($data['passwordError']) && empty($data['confirmPasswordError']) && empty($data['cityError']) && empty($data['postalCodeError'])
+            && empty($data['addressError'])) {
             return true;
         }
         return false;
     }
 
-    public function register($data) {
+    public function register($data)
+    {
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $this->userRepository->insertAddress($data);
         $this->userRepository->insertUser($data);
     }
 
-    public function checkLoginData($data) {
+    public function checkLoginData($data)
+    {
 
-        $user = new User();
         if ($this->userRepository->doesUsernameExist($data['username'])) {
-            $user = $this->userRepository->getUserByUsername($data['username']);
+            $this->user = $this->userRepository->getUserByUsername($data['username']);
         } else {
             $data['usernameError'] = 'Invalid username or password';
             $data['passwordError'] = 'Invalid username or password';
         }
 
-        if (!password_verify($data['password'],$user->getData('password'))) {
+        if (!password_verify($data['password'], $this->user->getData('password'))) {
             $data['usernameError'] = 'Invalid username or password';
             $data['passwordError'] = 'Invalid username or password';
         }
@@ -113,16 +117,29 @@ class UserService
         return $data;
     }
 
-    public function isLoginDataValid($data) {
-       if (empty($data['usernameError']) && empty($data['passwordError'])) {
-           return true;
-       }
-       return false;
+    public function isLoginDataValid($data)
+    {
+        if (empty($data['usernameError']) && empty($data['passwordError'])) {
+            $this->createUserSession($this->user);
+            return true;
+        }
+        return false;
 
     }
 
+    private function createUserSession($user)
+    {
+        $_SESSION['username'] = $user->getData('username');
+        $_SESSION['role'] = $user->getData('role');
+    }
 
-
+    public function logout()
+    {
+        unset($_SESSION['username']);
+        unset($_SESSION['role']);
+        session_destroy();
+        header('location: ' . URLROOT . '/User/login');
+    }
 
 
 }

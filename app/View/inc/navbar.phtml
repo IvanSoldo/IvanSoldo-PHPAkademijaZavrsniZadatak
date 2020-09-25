@@ -20,12 +20,19 @@
         </ul>
 
         <ul class="navbar-nav ml-auto">
+            <?php if(isset($_SESSION['username'])) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= URLROOT ?>/User/logout">Logout </a>
+                </li>
+            <?php else : ?>
             <li class="nav-item">
                 <a class="nav-link" href="<?= URLROOT ?>/User/register">Register </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?=URLROOT ?>/User/login">Login</a>
             </li>
+
+            <?php endif; ?>
         </ul>
     </div>
     </div>
