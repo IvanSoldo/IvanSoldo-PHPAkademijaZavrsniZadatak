@@ -1,36 +1,51 @@
-<?php require APPROOT . '/View/inc/header.phtml'?>
+<?php require APPROOT . '/View/inc/header.phtml' ?>
 
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card card-body bg-light mt-5">
                 <h2 class="text-center">Add Product</h2>
-                <p class="text-center">Add</p>
                 <form action="<?php echo URLROOT; ?>/Admin/manageProducts" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="productName">Product Name:*</label>
                         <input type="text" name="productName" class="form-control form-control-lg
-                        <?php echo (!empty($data['productNameError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['productName'];?>">
+                        <?php echo (!empty($data['productNameError'])) ? 'is-invalid' : ''; ?>"
+                               value="<?php echo $data['productName']; ?>">
                         <span class="invalid-feedback"> <?php echo $data['productNameError']; ?> </span>
                     </div>
                     <div class="form-group">
                         <label for="productPrice">Product Price:*</label>
                         <input type="text" name="productPrice" class="form-control form-control-lg
-                        <?php echo (!empty($data['productPriceError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['productPrice'];?>">
+                        <?php echo (!empty($data['productPriceError'])) ? 'is-invalid' : ''; ?>"
+                               value="<?php echo $data['productPrice']; ?>">
                         <span class="invalid-feedback"> <?php echo $data['productPriceError']; ?> </span>
                     </div>
                     <div class="form-group">
                         <label for="productDescription">Product Description:*</label>
                         <input type="text" name="productDescription" class="form-control form-control-lg
-                        <?php echo (!empty($data['productDescriptionError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['productDescription'];?>">
+                        <?php echo (!empty($data['productDescriptionError'])) ? 'is-invalid' : ''; ?>"
+                               value="<?php echo $data['productDescription']; ?>">
                         <span class="invalid-feedback"> <?php echo $data['productDescriptionError']; ?> </span>
                     </div>
-                    <div class="form-group">
-                        <label for="productCategory">Product Category:*</label>
-                        <input type="text" name="productCategory" class="form-control form-control-lg
-                        <?php echo (!empty($data['productCategoryError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['productCategory'];?>">
-                        <span class="invalid-feedback"> <?php echo $data['productCategoryError']; ?> </span>
-                    </div>
 
+                    <div class="form-group">
+                        <div class="text-center">
+                            <label>Product Catergory:*</label>
+                        </div>
+                        <div class="text-center">
+                            <?php
+                            foreach ($data['categoryArr'] as $category) {
+                                ?>
+
+                                <label class="radio-inline">
+                                    <input type="radio" name="categories[<?php echo $category; ?>]"
+                                           value="<?= $category ?>"> <?php echo '  ' . $category . '  '; ?>
+                                </label>
+
+                                <?php
+                            }
+                            ?>
+                        </div>
+                    </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Upload</span>
@@ -39,7 +54,6 @@
                             <label class="custom-file-label" for="productImage">Choose image</label>
                             <input type="file" name="productImage" class="custom-file-input" id="productImage">
                         </div>
-
                     </div>
                     <p class="text-center text-danger"><?= $data['productImageError'] ?></p>
                     <div class="row">
@@ -48,9 +62,10 @@
                         </div>
                     </div>
 
+
                 </form>
             </div>
         </div>
     </div>
 
-<?php require APPROOT . '/View/inc/footer.phtml'?>
+<?php require APPROOT . '/View/inc/footer.phtml' ?>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Core\Controller;
 use App\Core\Request;
+use App\Repository\AdminRepository;
 use App\Service\AdminService;
 use App\Service\UserService;
 
@@ -12,11 +13,13 @@ class AdminController extends Controller
 
     private $userService;
     private $adminService;
+    private $adminRepo;
 
     public function __construct()
     {
         $this->userService = new UserService();
         $this->adminService = new AdminService();
+        $this->adminRepo = new AdminRepository();
 
     }
 
@@ -105,22 +108,28 @@ class AdminController extends Controller
 
         if ($this->isPost()) {
 
+
+            //TODO:Pun in service
+            $categories = '';
+            if (isset($_POST['categories'])) {
+                $categories = $_POST['categories'];
+            }
+
             $data = [
                 'productName'=> trim(Request::getPostParam('productName')),
                 'productPrice'=> trim(Request::getPostParam('productPrice')),
                 'productDescription'=>trim(Request::getPostParam('productDescription')),
-                'productCategory'=> trim(Request::getPostParam('productCategory')),
                 'productImage'=> $_FILES['productImage'],
+                'chosenCategories' => $categories,
+                'categoryArr' =>$this->adminRepo->getCategories(),
                 'productNameError'=> '',
                 'productPriceError'=> '',
-                'productDescriptionError'=>'',
                 'productCategoryError'=> '',
                 'productImageError'=>''
             ];
 
+            var_dump($data['chosenCategories']);
             $data = $this->adminService->checkProductData($data);
-            var_dump($data);
-            //var_dump(file_get_contents($_FILES['productImage']['tmp_name']));
 
             if(!array_key_exists('role', $_SESSION)) {
                 $this->view('Home/index');
@@ -136,17 +145,18 @@ class AdminController extends Controller
                 'productName'=> '',
                 'productPrice'=> '',
                 'productDescription'=>'',
-                'productCategory'=> '',
                 'productImage'=>'',
+                'categoryArr' =>$this->adminRepo->getCategories(),
                 'productNameError'=> '',
                 'productPriceError'=> '',
-                'productDescriptionError'=>'',
                 'productCategoryError'=> '',
                 'productImageError'=>''
             ];
 
             $this->view('Admin/manageProducts', $data);
         }
+
+
 
 
 

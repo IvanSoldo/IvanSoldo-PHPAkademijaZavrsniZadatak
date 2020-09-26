@@ -32,8 +32,7 @@ class AdminRepository {
 
 
 
-
-    /*public function getCategories() {
+    public function getCategories() {
         $list = [];
         $db = Database::getInstance();
         $statement = $db->prepare('SELECT `category_name` FROM `category`');
@@ -43,7 +42,7 @@ class AdminRepository {
           array_push($list, $category->category_name);
         }
         return $list;
-    } */
+    }
 
 
 }
