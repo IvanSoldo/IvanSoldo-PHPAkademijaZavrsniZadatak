@@ -41,6 +41,10 @@ class AdminService {
 
         }
 
+       if (empty($data['productImage'])) {
+           $data['productImageError'] = 'Image is required';
+       }
+
         return $data;
 
     }

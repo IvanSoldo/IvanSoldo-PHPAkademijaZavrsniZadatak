@@ -5,7 +5,7 @@
             <div class="card card-body bg-light mt-5">
                 <h2 class="text-center">Add Product</h2>
                 <p class="text-center">Add</p>
-                <form action="<?php echo URLROOT; ?>/Admin/manageProducts" method="post">
+                <form action="<?php echo URLROOT; ?>/Admin/manageProducts" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="productName">Product Name:*</label>
                         <input type="text" name="productName" class="form-control form-control-lg
@@ -31,6 +31,17 @@
                         <span class="invalid-feedback"> <?php echo $data['productCategoryError']; ?> </span>
                     </div>
 
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <label class="custom-file-label" for="productImage">Choose image</label>
+                            <input type="file" name="productImage" class="custom-file-input" id="productImage">
+                        </div>
+
+                    </div>
+                    <p class="text-center text-danger"><?= $data['productImageError'] ?></p>
                     <div class="row">
                         <div class="col text-center">
                             <input type="submit" value="Add Product" class="btn btn-success">

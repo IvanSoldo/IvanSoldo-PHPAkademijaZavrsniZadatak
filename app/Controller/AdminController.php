@@ -110,13 +110,17 @@ class AdminController extends Controller
                 'productPrice'=> trim(Request::getPostParam('productPrice')),
                 'productDescription'=>trim(Request::getPostParam('productDescription')),
                 'productCategory'=> trim(Request::getPostParam('productCategory')),
+                'productImage'=> $_FILES['productImage']['name'],
                 'productNameError'=> '',
                 'productPriceError'=> '',
                 'productDescriptionError'=>'',
-                'productCategoryError'=> ''
+                'productCategoryError'=> '',
+                'productImageError'=>''
             ];
 
             $data = $this->adminService->checkProductData($data);
+            var_dump($data);
+
             if(!array_key_exists('role', $_SESSION)) {
                 $this->view('Home/index');
 
@@ -132,10 +136,12 @@ class AdminController extends Controller
                 'productPrice'=> '',
                 'productDescription'=>'',
                 'productCategory'=> '',
+                'productImage'=>'',
                 'productNameError'=> '',
                 'productPriceError'=> '',
                 'productDescriptionError'=>'',
-                'productCategoryError'=> ''
+                'productCategoryError'=> '',
+                'productImageError'=>''
             ];
 
             $this->view('Admin/manageProducts', $data);
