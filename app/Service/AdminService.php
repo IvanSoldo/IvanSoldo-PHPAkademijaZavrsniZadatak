@@ -41,12 +41,26 @@ class AdminService {
 
         }
 
-       if (empty($data['productImage'])) {
+       if (empty($data['productImage']['name'])) {
            $data['productImageError'] = 'Image is required';
+       } else {
+           if (!$this->isImage($data['productImage']['tmp_name'])) {
+               $data['productImageError'] = 'Only images allowed.';
+           } else if ($data['productImage']['size'] > 65535) {
+               $data['productImageError'] = 'Maximum size of image is 64 KB.';
+           } else if($data['productImage']['errors'] != 0) {
+               $data['productImageError'] = 'Something went wrong with image upload.';
+           }
        }
+
+
 
         return $data;
 
+    }
+
+    private function isImage($img){
+        return (bool)getimagesize($img);
     }
 
 
