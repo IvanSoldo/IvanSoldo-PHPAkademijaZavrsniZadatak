@@ -6,7 +6,7 @@ use App\Core\Controller;
 
 
 
-//TODO: add htmlspeacialchars to input fields/textarea
+//TODO: add htmlspeacialchars to input fields/textarea/limit text length
 
 
 class HomeController extends Controller{

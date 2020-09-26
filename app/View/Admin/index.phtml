@@ -1,8 +1,28 @@
-<?php require APPROOT . '/View/inc/dashboardHeader.phtml'?>
+<?php require APPROOT . '/View/inc/header.phtml'?>
     <div class="card card-body bg-light mt-5">
         <h2 class="text-center">Dashboard</h2>
         <p class="text-center">Manage your webshop with ease!</p>
-        <?php flash('register_success'); ?>
+        <div class="list-group">
+            <a href="<?php echo URLROOT; ?>/Admin/addAdmin" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Add Admin</h5>
+                </div>
+                <p class="mb-1">Add another admin to spread the workload!</p>
+            </a>
+            <a href="<?php echo URLROOT; ?>/Admin/manageProducts" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Manage Products</h5>
+                </div>
+                <p class="mb-1">Add and disable your products.</p>
+            </a>
+            <a href="<?php echo URLROOT; ?>/Admin/orders" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Orders</h5>
+                </div>
+                <p class="mb-1">View and download orders.</p>
+                <small class="text-muted"></small>
+            </a>
+        </div>
     </div>
 
 

@@ -21,6 +21,7 @@ class UserService
     public function checkRegisterData($data)
     {
 
+        //TODO: change if empty check into 1 private dynamic method.
         if (empty($data['email'])) {
             $data['emailError'] = 'Please enter email';
         } else {
@@ -162,7 +163,7 @@ class UserService
         return $data;
     }
 
-    public function isSettingsDataValid($data) {
+    public function isSettingsDataValid($data) { //TODO: password must be 6 length
         if (empty($data['passwordError']) && empty($data['confirmPasswordError'])) {
             return true;
         }

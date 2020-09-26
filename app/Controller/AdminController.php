@@ -4,20 +4,23 @@ namespace App\Controller;
 
 use App\Core\Controller;
 use App\Core\Request;
+use App\Service\AdminService;
 use App\Service\UserService;
 
 class AdminController extends Controller
 {
 
     private $userService;
+    private $adminService;
 
     public function __construct()
     {
         $this->userService = new UserService();
+        $this->adminService = new AdminService();
 
     }
 
-    public function indexAction()
+    public function indexAction() //TODO: refactor to method
     {
         if(!array_key_exists('role', $_SESSION)) {
             $this->view('Home/index');
@@ -96,6 +99,50 @@ class AdminController extends Controller
                 $this->view('Admin/addAdmin',$data);
             }
         }
+    }
+
+    public function manageProductsAction() {
+
+        if ($this->isPost()) {
+
+            $data = [
+                'productName'=> trim(Request::getPostParam('productName')),
+                'productPrice'=> trim(Request::getPostParam('productPrice')),
+                'productDescription'=>trim(Request::getPostParam('productDescription')),
+                'productCategory'=> trim(Request::getPostParam('productCategory')),
+                'productNameError'=> '',
+                'productPriceError'=> '',
+                'productDescriptionError'=>'',
+                'productCategoryError'=> ''
+            ];
+
+            $data = $this->adminService->checkProductData($data);
+            if(!array_key_exists('role', $_SESSION)) {
+                $this->view('Home/index');
+
+            } else if ($_SESSION['role'] != 'admin') {
+                $this->view('Home/index');
+            } else {
+                $this->view('Admin/manageProducts', $data);
+            }
+
+        } else {
+            $data = [
+                'productName'=> '',
+                'productPrice'=> '',
+                'productDescription'=>'',
+                'productCategory'=> '',
+                'productNameError'=> '',
+                'productPriceError'=> '',
+                'productDescriptionError'=>'',
+                'productCategoryError'=> ''
+            ];
+
+            $this->view('Admin/manageProducts', $data);
+        }
+
+
+
     }
 
 }

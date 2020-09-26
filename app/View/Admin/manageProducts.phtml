@@ -1,0 +1,45 @@
+<?php require APPROOT . '/View/inc/header.phtml'?>
+
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card card-body bg-light mt-5">
+                <h2 class="text-center">Add Product</h2>
+                <p class="text-center">Add</p>
+                <form action="<?php echo URLROOT; ?>/Admin/manageProducts" method="post">
+                    <div class="form-group">
+                        <label for="productName">Product Name:*</label>
+                        <input type="text" name="productName" class="form-control form-control-lg
+                        <?php echo (!empty($data['productNameError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['productName'];?>">
+                        <span class="invalid-feedback"> <?php echo $data['productNameError']; ?> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Product Price:*</label>
+                        <input type="text" name="productPrice" class="form-control form-control-lg
+                        <?php echo (!empty($data['productPriceError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['productPrice'];?>">
+                        <span class="invalid-feedback"> <?php echo $data['productPriceError']; ?> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Product Description:*</label>
+                        <input type="text" name="productDescription" class="form-control form-control-lg
+                        <?php echo (!empty($data['productDescriptionError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['productDescription'];?>">
+                        <span class="invalid-feedback"> <?php echo $data['productDescriptionError']; ?> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Product Category:*</label>
+                        <input type="text" name="productCategory" class="form-control form-control-lg
+                        <?php echo (!empty($data['productCategoryError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['productCategory'];?>">
+                        <span class="invalid-feedback"> <?php echo $data['productCategoryError']; ?> </span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col text-center">
+                            <input type="submit" value="Add Product" class="btn btn-success">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+<?php require APPROOT . '/View/inc/footer.phtml'?>
