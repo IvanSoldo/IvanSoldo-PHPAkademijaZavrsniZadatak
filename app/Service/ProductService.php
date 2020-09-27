@@ -18,6 +18,17 @@ class ProductService {
         return $this->productRepository->getProducts();
     }
 
+    //returns array of products
+    public function getProductsFromCategory($data) {
+        $productList =[];
+        $productIds = $this->productRepository->getProductFromCategory($data['id']);
+        foreach ($productIds as $productId) {
+            array_push($productList,$this->productRepository->getProduct($productId));
+        }
+        return $productList;
+
+    }
+
 
 
 }

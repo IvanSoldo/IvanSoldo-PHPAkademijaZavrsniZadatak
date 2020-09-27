@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Core\Controller;
+
+use App\Service\AdminService;
 use App\Service\ProductService;
 
 
@@ -12,12 +14,18 @@ use App\Service\ProductService;
 class HomeController extends Controller{
 
     private $productService;
+    private $adminService;
 
     public function __construct() {
         $this->productService = new ProductService();
+        $this->adminService = new AdminService();
     }
 
     public function indexAction() {
+
+       /* $data['id'] = 2;
+        $test = $this->productService->getProductsFromCategory($data);
+        var_dump($test); */
 
         $data = $this->productService->getProducts();
 

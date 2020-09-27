@@ -79,11 +79,28 @@ class ProductRepository {
 
     }
 
-    public function getProduct($productName) {
+    public function getProductFromCategory($categoryId) {
+
+        $list = [];
+        $db = Database::getInstance();
+        $statement = $db->prepare('SELECT product_id FROM `product_category` WHERE category_id = :category_id;');
+        $statement->bindValue('category_id', $categoryId);
+        $statement->execute();
+        $productIds = $statement->fetchAll();
+        foreach ($productIds as $productId) {
+            $productId = intval($productId->product_id);
+            array_push($list, $productId);
+        }
+        return $list;
+
+    }
+
+
+    public function getProduct($id) {
 
         $db = Database::getInstance();
-        $statement= $db->prepare('SELECT * FROM product where product_name = :productName;');
-        $statement->bindValue('productName', $productName);
+        $statement= $db->prepare('SELECT * FROM product where id = :id;');
+        $statement->bindValue('id', $id);
         $statement->execute();
         $product = $statement->fetch();
         $product = new Product([
