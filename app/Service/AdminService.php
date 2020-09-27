@@ -6,11 +6,11 @@ use App\Repository\ProductRepository;
 
 class AdminService {
 
-    private $adminRepository;
+    private $productRepository;
 
     public function __construct() {
 
-        $this->adminRepository = new ProductRepository();
+        $this->productRepository = new ProductRepository();
 
     }
 
@@ -19,7 +19,7 @@ class AdminService {
         if (empty($data['productName'])) {
             $data['productNameError'] = 'Please enter product name';
         } else {
-            if ($this->adminRepository->doesProductExist($data['productName'])) {
+            if ($this->productRepository->doesProductExist($data['productName'])) {
                 $data['productNameError'] = 'Product already exists!';
             }
         }
@@ -64,13 +64,12 @@ class AdminService {
 
     public function isRadioButtonSet($categories) {
         if (isset($_POST['categories'])) {
-            $categories = $_POST['categories'];
-            return $categories;
+            return $categories = $_POST['categories'];
         }
     }
 
     public function getCategories() {
-        return $this->adminRepository->getCategories();
+        return $this->productRepository->getCategories();
     }
 
     public function isProductDataValid($data) {
@@ -81,7 +80,7 @@ class AdminService {
     }
 
     public function addProduct($data) {
-        $this->adminRepository->insertProduct($data);
+        $this->productRepository->insertProduct($data);
     }
 
 

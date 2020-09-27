@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Core\Controller;
 use App\Core\Request;
+use App\Repository\ProductRepository;
 use App\Service\AdminService;
 use App\Service\UserService;
 
@@ -22,6 +23,10 @@ class AdminController extends Controller
 
     public function indexAction()
     {
+
+        //echo '<img src="data:image/jpeg;base64,'.base64_encode( $sofa->getData('product_picture') ).'"/>';
+
+
         if(!array_key_exists('role', $_SESSION)) {//TODO: refactor to method
             $this->view('Home/index');
         } else if ($_SESSION['role'] != 'admin') {
@@ -65,6 +70,8 @@ class AdminController extends Controller
             } else {
                 $this->view('Admin/addAdmin', $data);
             }
+
+
 
 
         } else {

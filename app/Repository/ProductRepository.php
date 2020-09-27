@@ -11,16 +11,6 @@ class ProductRepository {
 
     public function __construct() {
 
-        $this->product = new Product();
-    }
-
-    public function doesProductCategoryExist($category)
-    {
-        $db = Database::getInstance();
-        $statement = $db->prepare('SELECT `category_name` FROM `category` where `category_name` = (?)', [$category]);
-        $statement->execute([$category]);
-        $fetched = $statement->rowCount();
-        return (bool)$fetched;
     }
 
     public function doesProductExist($product)
@@ -43,6 +33,19 @@ class ProductRepository {
         }
         return $list;
     }
+
+    public function getProducts() {
+        $list = [];
+        $db = Database::getInstance();
+        $statement = $db->prepare('select * from product');
+        $statement->execute();
+        $products = $statement->fetchAll();
+        foreach ($products as $product) {
+            array_push($list, $product);
+        }
+        return $list;
+    }
+
 
     public function insertProduct($data) {
         $db=Database::getInstance();
@@ -73,6 +76,26 @@ class ProductRepository {
         $productName = $id['id'];
         $productName = intval($productName);
         return $productName;
+
+    }
+
+    public function getProduct($productName) {
+
+        $db = Database::getInstance();
+        $statement= $db->prepare('SELECT * FROM product where product_name = :productName;');
+        $statement->bindValue('productName', $productName);
+        $statement->execute();
+        $product = $statement->fetch();
+        $product = new Product([
+            'id' => $product->id,
+            'product_name' => $product->product_name,
+            'product_price' => floatval($product->product_price),
+            'product_description' => $product->product_description,
+            'product_picture'=> $product->product_picture,
+            'product_active'=>$product->product_active
+        ]);
+
+        return $product;
 
     }
 

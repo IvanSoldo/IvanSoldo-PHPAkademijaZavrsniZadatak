@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Core\Controller;
-
+use App\Service\ProductService;
 
 
 //TODO: add htmlspeacialchars to input fields/textarea/limit text length
@@ -11,8 +11,17 @@ use App\Core\Controller;
 
 class HomeController extends Controller{
 
+    private $productService;
+
+    public function __construct() {
+        $this->productService = new ProductService();
+    }
+
     public function indexAction() {
-        $this->view('Home/index');
+
+        $data = $this->productService->getProducts();
+
+        $this->view('Home/index', $data);
     }
 
     public function aboutAction() {
