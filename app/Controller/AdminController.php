@@ -111,7 +111,9 @@ class AdminController extends Controller
                 'productName'=> trim(Request::getPostParam('productName')),
                 'productPrice'=> trim(Request::getPostParam('productPrice')),
                 'productDescription'=>trim(Request::getPostParam('productDescription')),
-                'productImage'=> $_FILES['productImage'],
+                'productImageSize'=>$_FILES['productImage']['size'],
+                'productImageBlob' =>$_FILES['productImage']['tmp_name'],
+                'productImageErr' =>$_FILES['productImage']['error'],
                 'chosenCategories' => $categories,
                 'categoryArr' =>$this->adminService->getCategories(),
                 'productNameError'=> '',
@@ -120,8 +122,15 @@ class AdminController extends Controller
                 'productImageError'=>'',
             ];
 
+
             $data = $this->adminService->checkProductData($data);
-            $this->view('Admin/manageProducts', $data);
+            if ($this->adminService->isProductDataValid($data)) {
+                $this->adminService->addProduct($data);
+                flash('register_success', 'New Product added!');
+                $this->view('Admin/manageProducts', $data);
+            } else {
+                $this->view('Admin/manageProducts', $data);
+            }
 
 
         } else {
@@ -129,7 +138,7 @@ class AdminController extends Controller
                 'productName'=> '',
                 'productPrice'=> '',
                 'productDescription'=>'',
-                'productImage'=>'',
+                'chosenCategories' =>'',
                 'categoryArr' =>$this->adminService->getCategories(),
                 'productNameError'=> '',
                 'productPriceError'=> '',

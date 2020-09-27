@@ -3,11 +3,15 @@
 namespace App\Repository;
 
 use App\Core\Database;
+use App\Model\Product;
 
-class AdminRepository {
+class ProductRepository {
+
+    private $product;
 
     public function __construct() {
 
+        $this->product = new Product();
     }
 
     public function doesProductCategoryExist($category)
@@ -28,10 +32,6 @@ class AdminRepository {
         return (bool)$fetched;
     }
 
-
-
-
-
     public function getCategories() {
         $list = [];
         $db = Database::getInstance();
@@ -43,6 +43,19 @@ class AdminRepository {
         }
         return $list;
     }
+
+    public function insertProduct($data) {
+        $db=Database::getInstance();
+        $statement = $db->prepare('insert into product (product_name, product_price, product_description, product_picture)
+                                            values (:productName, :productPrice, :productDescription, :productPicture);');
+        $statement->bindValue('productName', $data['productName']);
+        $statement->bindValue('productPrice', $data['productPrice']);
+        $statement->bindValue('productDescription', $data['productDescription']);
+        $statement->bindValue('productPicture', file_get_contents($data['productImageBlob']));
+        $statement->execute();
+    }
+
+    
 
 
 }
