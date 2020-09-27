@@ -9,7 +9,6 @@ class ProductService {
     private $productRepository;
 
     public function __construct() {
-
         $this->productRepository = new ProductRepository();
 
     }

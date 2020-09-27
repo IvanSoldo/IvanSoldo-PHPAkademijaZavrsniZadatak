@@ -1,4 +1,4 @@
-<?php require APPROOT . '/View/inc/header.phtml'?>
+<?php require APPROOT . '/View/inc/header.phtml' ?>
     <div class="container">
 
         <div class="row">
@@ -8,9 +8,9 @@
                 <h1 class="my-4">Webshop</h1>
 
                 <div class="list-group">
-                    <a href="#" class="list-group-item">Category 1</a>
-                    <a href="#" class="list-group-item">Category 2</a>
-                    <a href="#" class="list-group-item">Category 3</a>
+                    <a href="<?= URLROOT ?>/Home/diningRoom" class="list-group-item">Dining Room </a>
+                    <a href="<?= URLROOT ?>/Home/garden" class="list-group-item">Garden</a>
+                    <a href="<?= URLROOT ?>/Home/livingRoom" class="list-group-item">Living Room</a>
                 </div>
 
             </div>
@@ -54,23 +54,25 @@
 
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="card h-100">
-                                <a href="#"><img class="card-img-top" src="data:image/jpeg;base64, <?php echo base64_encode($product->product_picture) ?> " alt=""></a>
+                                <a href="#"><img class="card-img-top"
+                                                 src="data:image/jpeg;base64, <?php echo base64_encode($product->product_picture) ?> "
+                                                 alt=""></a>
                                 <div class="card-body">
                                     <h4 class="card-title">
                                         <a href="#"><?= $product->product_name ?></a>
                                     </h4>
-                                    <h5>$ <?=$product->product_price ?></h5>
+                                    <h5>$ <?= $product->product_price ?></h5>
                                     <p class="card-text">Product description:</p>
                                     <p class="card-text"><?= $product->product_description ?> </p>
+                                    <div class="col text-center">
+                                        <input type="submit" value="Add to Cart" class="btn btn-outline-success">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                         <?php
                     }
                     ?>
-
-
 
 
                 </div>
@@ -80,4 +82,5 @@
 
     </div>
 
-<?php require APPROOT . '/View/inc/footer.phtml'?>
+
+<?php require APPROOT . '/View/inc/footer.phtml' ?>

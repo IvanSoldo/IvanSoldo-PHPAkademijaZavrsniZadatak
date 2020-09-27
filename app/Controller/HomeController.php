@@ -9,6 +9,7 @@ use App\Service\ProductService;
 
 
 //TODO: add htmlspeacialchars to input fields/textarea/limit text length
+//TODO: Redirect to static page not found
 
 
 class HomeController extends Controller{
@@ -23,9 +24,7 @@ class HomeController extends Controller{
 
     public function indexAction() {
 
-       /* $data['id'] = 2;
-        $test = $this->productService->getProductsFromCategory($data);
-        var_dump($test); */
+
 
         $data = $this->productService->getProducts();
 
@@ -39,6 +38,29 @@ class HomeController extends Controller{
     public function contactAction() {
         $this->view('Home/contact');
     }
+
+    public function diningRoomAction() {
+
+        $data['id'] = 2;
+        $data = $this->productService->getProductsFromCategory($data);
+        $this->view('Home/diningRoom', $data);
+    }
+
+    public function gardenAction() {
+
+        $data['id'] = 3;
+        $data = $this->productService->getProductsFromCategory($data);
+        $this->view('Home/garden', $data);
+    }
+
+    public function livingRoomAction() {
+
+        $data['id'] = 1;
+        $data = $this->productService->getProductsFromCategory($data);
+        $this->view('Home/livingRoom', $data);
+    }
+
+
 
 
 }

@@ -153,5 +153,9 @@ class UserController extends Controller
 
     }
 
+    public function shoppingCartAction() {
+        $this->view('User/shoppingCart');
+    }
+
 
 }
