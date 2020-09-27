@@ -32,13 +32,9 @@ class AdminService {
             $data['productDescriptionError'] = 'Please enter product description';
         }
 
-        if (empty($data['productCategory'])) {
-            $data['productCategoryError'] = 'Please enter product category';
-        } else {
-            if (!$this->adminRepository->doesProductCategoryExist($data['productCategory'])) {
-                $data['productCategoryError'] = 'Category not found';
-            }
 
+        if (empty($data['chosenCategories'])) {
+            $data['productCategoryError'] = 'At least one category has to be selected.';
         }
 
        if (empty($data['productImage']['name'])) {
@@ -52,16 +48,25 @@ class AdminService {
                $data['productImageError'] = 'Something went wrong with image upload.';
            }
        }
-
-
-
         return $data;
-
     }
 
     private function isImage($img){
         return (bool)getimagesize($img);
     }
+
+    public function isRadioButtonSet($categories) {
+        if (isset($_POST['categories'])) {
+            $categories = $_POST['categories'];
+            return $categories;
+        }
+    }
+
+    public function getCategories() {
+        return $this->adminRepository->getCategories();
+    }
+
+
 
 
 

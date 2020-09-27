@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Core\Controller;
 use App\Core\Request;
-use App\Repository\AdminRepository;
 use App\Service\AdminService;
 use App\Service\UserService;
 
@@ -13,21 +12,18 @@ class AdminController extends Controller
 
     private $userService;
     private $adminService;
-    private $adminRepo;
 
     public function __construct()
     {
         $this->userService = new UserService();
         $this->adminService = new AdminService();
-        $this->adminRepo = new AdminRepository();
 
     }
 
-    public function indexAction() //TODO: refactor to method
+    public function indexAction()
     {
-        if(!array_key_exists('role', $_SESSION)) {
+        if(!array_key_exists('role', $_SESSION)) {//TODO: refactor to method
             $this->view('Home/index');
-
         } else if ($_SESSION['role'] != 'admin') {
             $this->view('Home/index');
         } else {
@@ -108,12 +104,8 @@ class AdminController extends Controller
 
         if ($this->isPost()) {
 
-
-            //TODO:Pun in service
             $categories = '';
-            if (isset($_POST['categories'])) {
-                $categories = $_POST['categories'];
-            }
+            $categories = $this->adminService->isRadioButtonSet($categories);
 
             $data = [
                 'productName'=> trim(Request::getPostParam('productName')),
@@ -121,15 +113,30 @@ class AdminController extends Controller
                 'productDescription'=>trim(Request::getPostParam('productDescription')),
                 'productImage'=> $_FILES['productImage'],
                 'chosenCategories' => $categories,
-                'categoryArr' =>$this->adminRepo->getCategories(),
+                'categoryArr' =>$this->adminService->getCategories(),
+                'productNameError'=> '',
+                'productPriceError'=> '',
+                'productCategoryError'=> '',
+                'productImageError'=>'',
+            ];
+
+            $data = $this->adminService->checkProductData($data);
+            $this->view('Admin/manageProducts', $data);
+
+
+        } else {
+            $data = [
+                'productName'=> '',
+                'productPrice'=> '',
+                'productDescription'=>'',
+                'productImage'=>'',
+                'categoryArr' =>$this->adminService->getCategories(),
                 'productNameError'=> '',
                 'productPriceError'=> '',
                 'productCategoryError'=> '',
                 'productImageError'=>''
             ];
 
-            var_dump($data['chosenCategories']);
-            $data = $this->adminService->checkProductData($data);
 
             if(!array_key_exists('role', $_SESSION)) {
                 $this->view('Home/index');
@@ -139,26 +146,7 @@ class AdminController extends Controller
             } else {
                 $this->view('Admin/manageProducts', $data);
             }
-
-        } else {
-            $data = [
-                'productName'=> '',
-                'productPrice'=> '',
-                'productDescription'=>'',
-                'productImage'=>'',
-                'categoryArr' =>$this->adminRepo->getCategories(),
-                'productNameError'=> '',
-                'productPriceError'=> '',
-                'productCategoryError'=> '',
-                'productImageError'=>''
-            ];
-
-            $this->view('Admin/manageProducts', $data);
         }
-
-
-
-
 
     }
 
