@@ -133,12 +133,14 @@ class UserService
     {
         $_SESSION['username'] = $user->getData('username');
         $_SESSION['role'] = $user->getData('role');
+        $_SESSION['cart'] = array();
     }
 
     public function logout()
     {
         unset($_SESSION['username']);
         unset($_SESSION['role']);
+        unset($_SESSION['cart']);
         session_destroy();
         header('location: ' . URLROOT . '/User/login');
     }
@@ -184,6 +186,8 @@ class UserService
         $this->userRepository->insertAddress($data);
         $this->userRepository->insertUser($data);
     }
+
+
 
 
 }

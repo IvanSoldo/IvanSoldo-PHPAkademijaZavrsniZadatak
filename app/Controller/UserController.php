@@ -18,7 +18,7 @@ class UserController extends Controller
     }
 
     public function indexAction() {
-        $this->view('Home/index');
+        header('location: ' . URLROOT);
     }
 
     public function registerAction()
@@ -77,7 +77,13 @@ class UserController extends Controller
                 'addressError' => ''
             ];
 
-            $this->view('User/register', $data);
+            if(array_key_exists('role', $_SESSION)) {
+                header('location: ' . URLROOT);
+
+            } else {
+                $this->view('User/register', $data);
+            }
+
         }
 
     }
@@ -97,7 +103,7 @@ class UserController extends Controller
             $data = $this->userService->checkLoginData($data);
             if ($this->userService->isLoginDataValid($data)) {
                 flash('register_success', 'Welcome ' . $_SESSION['username'] . ' !');
-                header('location: ' . URLROOT . '/Home/index');
+                header('location: ' . URLROOT);
             } else {
                 $this->view('User/login', $data);
             }
@@ -110,8 +116,14 @@ class UserController extends Controller
                 'passwordError' => ''
             ];
 
+            if(array_key_exists('role', $_SESSION)) {
+                header('location: ' . URLROOT);
 
-            $this->view('User/login', $data);
+            } else {
+                $this->view('User/login', $data);
+            }
+
+
         }
 
     }
@@ -147,14 +159,34 @@ class UserController extends Controller
                 'passwordError' => '',
                 'confirmPasswordError' => ''
             ];
+            if(!array_key_exists('role', $_SESSION)) {
+                header('location: ' . URLROOT);
 
-            $this->view('User/settings', $data);
+            } else {
+                $this->view('User/settings', $data);
+            }
+
+
         }
 
     }
 
     public function shoppingCartAction() {
-        $this->view('User/shoppingCart');
+
+        if ($this->isPost()) {
+
+        } else {
+
+            if(!array_key_exists('role', $_SESSION)) {
+                header('location: ' . URLROOT);
+            } else {
+                $this->view('User/shoppingCart');
+            }
+        }
+
+
+
+
     }
 
 

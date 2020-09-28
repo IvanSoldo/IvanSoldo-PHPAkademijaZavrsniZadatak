@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Core\Controller;
 
 use App\Service\AdminService;
+use App\Service\CartService;
 use App\Service\ProductService;
 
 
@@ -16,15 +17,17 @@ class HomeController extends Controller{
 
     private $productService;
     private $adminService;
+    private $cartService;
 
     public function __construct() {
         $this->productService = new ProductService();
         $this->adminService = new AdminService();
+        $this->cartService = new CartService();
     }
 
     public function indexAction() {
 
-
+        $this->cartService->addToCart();
 
         $data = $this->productService->getProducts();
 
@@ -59,6 +62,7 @@ class HomeController extends Controller{
         $data = $this->productService->getProductsFromCategory($data);
         $this->view('Home/livingRoom', $data);
     }
+
 
 
 

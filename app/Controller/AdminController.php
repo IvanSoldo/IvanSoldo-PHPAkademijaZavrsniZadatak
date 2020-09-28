@@ -28,9 +28,9 @@ class AdminController extends Controller
 
 
         if(!array_key_exists('role', $_SESSION)) {//TODO: refactor to method
-            $this->view('Home/index');
+            header('location: ' . URLROOT);
         } else if ($_SESSION['role'] != 'admin') {
-            $this->view('Home/index');
+            header('location: ' . URLROOT);
         } else {
             $this->view('Admin/index');
         }
@@ -97,10 +97,10 @@ class AdminController extends Controller
             ];
 
             if(!array_key_exists('role', $_SESSION)) {
-                $this->view('Home/index');
+                header('location: ' . URLROOT);
 
             } else if ($_SESSION['role'] != 'admin') {
-                $this->view('Home/index');
+                header('location: ' . URLROOT);
             } else {
                 $this->view('Admin/addAdmin',$data);
             }
@@ -155,10 +155,10 @@ class AdminController extends Controller
 
 
             if(!array_key_exists('role', $_SESSION)) {
-                $this->view('Home/index');
+                header('location: ' . URLROOT);
 
             } else if ($_SESSION['role'] != 'admin') {
-                $this->view('Home/index');
+                header('location: ' . URLROOT);
             } else {
                 $this->view('Admin/manageProducts', $data);
             }
