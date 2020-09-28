@@ -22,6 +22,15 @@ class ProductRepository {
         return (bool)$fetched;
     }
 
+    public function checkIfProductExistById($id)
+    {
+        $db = Database::getInstance();
+        $statement = $db->prepare('SELECT `product_name` FROM `product` where `id` = (?)', [$id]);
+        $statement->execute([$id]);
+        $fetched = $statement->rowCount();
+        return (bool)$fetched;
+    }
+
     public function getCategories() {
         $list = [];
         $db = Database::getInstance();
@@ -63,7 +72,6 @@ class ProductRepository {
             $statement->bindValue('productId', $productId);
             $statement->execute();
         }
-
     }
 
     private function getProductId($productName)
@@ -109,13 +117,13 @@ class ProductRepository {
             'product_price' => floatval($product->product_price),
             'product_description' => $product->product_description,
             'product_picture'=> $product->product_picture,
-            'product_active'=>$product->product_active
+            'product_active'=>$product->product_active,
         ]);
 
+        $product->setData('quantity', 1);
         return $product;
 
     }
-
 
     private function getCategoryId($category)
     {

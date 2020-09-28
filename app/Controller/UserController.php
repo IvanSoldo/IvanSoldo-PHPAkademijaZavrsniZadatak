@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Core\Controller;
+use App\Service\CartService;
 use App\Service\UserService;
 use App\Core\Request;
 
@@ -10,14 +11,17 @@ class UserController extends Controller
 {
 
     private $userService;
+    private $cartService;
 
     public function __construct()
     {
         $this->userService = new UserService();
+        $this->cartService = new CartService();
 
     }
 
-    public function indexAction() {
+    public function indexAction()
+    {
         header('location: ' . URLROOT);
     }
 
@@ -77,7 +81,7 @@ class UserController extends Controller
                 'addressError' => ''
             ];
 
-            if(array_key_exists('role', $_SESSION)) {
+            if (array_key_exists('role', $_SESSION)) {
                 header('location: ' . URLROOT);
 
             } else {
@@ -116,7 +120,7 @@ class UserController extends Controller
                 'passwordError' => ''
             ];
 
-            if(array_key_exists('role', $_SESSION)) {
+            if (array_key_exists('role', $_SESSION)) {
                 header('location: ' . URLROOT);
 
             } else {
@@ -133,7 +137,8 @@ class UserController extends Controller
         $this->userService->logout();
     }
 
-    public function settingsAction() {
+    public function settingsAction()
+    {
         if ($this->isPost()) {
             $data = [
                 'password' => trim(Request::getPostParam('password')),
@@ -143,12 +148,12 @@ class UserController extends Controller
             ];
 
             $data = $this->userService->checkSettingsData($data);
-            if($this->userService->isSettingsDataValid($data)) {
+            if ($this->userService->isSettingsDataValid($data)) {
                 $this->userService->changePassword($data);
                 flash('register_success', 'Password changed!');
                 header('location: ' . URLROOT . '/User/settings');
             } else {
-                $this->view('User/settings',$data);
+                $this->view('User/settings', $data);
             }
 
         } else {
@@ -159,33 +164,51 @@ class UserController extends Controller
                 'passwordError' => '',
                 'confirmPasswordError' => ''
             ];
-            if(!array_key_exists('role', $_SESSION)) {
+            if (!array_key_exists('role', $_SESSION)) {
                 header('location: ' . URLROOT);
 
             } else {
                 $this->view('User/settings', $data);
             }
-
-
         }
-
     }
 
-    public function shoppingCartAction() {
+    public function shoppingCartAction()
+    {
 
         if ($this->isPost()) {
+            $data = [
+                'totalPrice' => 0,
+                'productId' => Request::getPostParam('id'),
+                'productQuantity' => Request::getPostParam('quantity')
+            ];
+
+            /*
+            for ($i = 0; $i < count($_SESSION['cart']); $i++) {
+                $product = unserialize($_SESSION['cart'][$i]);
+                if ($product->getData('id') == $data['productId']) {
+                    $product->setData('quantity', $data['productQuantity']);
+                    $product->setdata('quantity', $product->getData('quantity'));
+                    $_SESSION['cart'][$i] = serialize($product); //TODO:same method with unset to delete from cart.
+                }
+            } */
+
+            $this->view('User/shoppingCart', $data);
 
         } else {
 
-            if(!array_key_exists('role', $_SESSION)) {
+            $data = [
+                'totalPrice' => 0,
+                'productId' => '',
+                'productQuantity' => ''
+            ];
+
+            if (!array_key_exists('role', $_SESSION)) {
                 header('location: ' . URLROOT);
             } else {
-                $this->view('User/shoppingCart');
+                $this->view('User/shoppingCart', $data);
             }
         }
-
-
-
 
     }
 

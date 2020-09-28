@@ -1,51 +1,71 @@
-<?php require APPROOT . '/View/inc/header.phtml'?>
+<?php require APPROOT . '/View/inc/header.phtml' ?>
 
     <div class="container mt-5">
-        <table id="cart" class="table table-responsive">
-            <thead>
-            <tr class="names">
-                <th style="width:50%">Product</th>
-                <th style="width:10%" class="text-right hidden-xs">Size</th>
-                <th style="width:10%" class="text-right hidden-xs">Price</th>
-                <th style="width:15%" class="text-right">Quantity</th>
-                <th style="width:10%" class="text-right">Amount</th>
-                <th style="width:5%"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="item">
-                <td data-th="Product">
-                    <div class="row">
-                        <div class="col-sm-9">
-                            <h5 class="nomargin">Name</h5>
+        <form action="<?php echo URLROOT; ?>/User/shoppingCart" method="post">
+            <table id="cart" class="table table-responsive">
+                <thead>
+                <tr class="names">
+                    <th style="width:50%">Product</th>
+                    <th style="width:15%" class="text-right hidden-xs">Price</th>
+                    <th style="width:15%" class="text-right">Quantity</th>
+                    <th style="width:15%" class="text-right">Amount</th>
+                    <th style="width:5%"></th>
+                </tr>
+                </thead>
+                <?php foreach ($_SESSION['cart'] as $product): ?>
+                    <tbody>
+                    <tr class="item">
+                        <td data-th="Product">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h6 class="nomargin"><?= unserialize($product)->product_name ?></h6>
+                                    <p><?= unserialize($product)->product_description ?></p>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-th="Price" class="text-right hidden-xs">
+                            $<?= unserialize($product)->product_price ?></td>
+                        <td data-th="Quantity" class="text-right">
+                            <form action="<?php echo URLROOT; ?>/User/shoppingCart" method="post">
+                                <div class="form-group">
+                                    <div>
+                                        <input type="number" min="1" max="999" class="form-control" name="quantity" value="<?=unserialize($product)->quantity ?>">
+                                        <input type="hidden" class="form-control" name="id" value="<?= unserialize($product)->id ?>">
+                                        <div class="m-md-1">
+                                            <input type="submit" value="Change Quantity" class="btn btn-success">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </td>
+                        <td data-th="Subtotal" class="text-right">
+                            $<?= unserialize($product)->product_price * unserialize($product)->quantity ?></td>
+                        <?php $data['totalPrice'] += unserialize($product)->product_price * unserialize($product)->quantity ?>
+                    </tr>
+                    </tbody>
+                <?php endforeach; ?>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td class="hidden-xs" colspan="1"></td>
+                    <td class="text-right">Total</td>
+                    <td class="text-right"><strong>$<?= $data['totalPrice'] ?></strong></td>
+                    <td></td>
+                </tr>
+                <tr class="no-border">
+                    <td><a href="" class="btn btn-light btn-block">Continue Shopping</a></td>
+                    <td colspan="2" class="hidden-xs"></td>
+                    <td></td>
+                    <td colspan="2">
+                        <div class="col">
+                            <input type="submit" value="Buy" class="btn btn-success">
                         </div>
-                    </div>
-                </td>
-                <td data-th="Size" class="text-right hidden-xs">38</td>
-                <td data-th="Price" class="text-right hidden-xs">$109.99</td>
-                <td data-th="Quantity" class="text-right">1</td>
-                <td data-th="Subtotal" class="text-right">$109.99</td>
-                <td class="actions" data-th="">
-                    <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                </td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td></td>
-                <td class="hidden-xs" colspan="2"></td>
-                <td class="text-right">Total</td>
-                <td class="text-right"><strong>$109.99</strong></td>
-                <td></td>
-            </tr>
-            <tr class="no-border">
-                <td> <a href="" class="btn btn-light btn-block">Continue Shopping</a></td>
-                <td colspan="2" class="hidden-xs"></td>
-                <td></td>
-                <td colspan="2"><a href="#" class="btn btn-success btn-block">Buy</a></td>
-            </tr>
-            </tfoot>
-        </table>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </form>
     </div>
 
-<?php require APPROOT . '/View/inc/footer.phtml'?>
+<?php require APPROOT . '/View/inc/footer.phtml' ?>

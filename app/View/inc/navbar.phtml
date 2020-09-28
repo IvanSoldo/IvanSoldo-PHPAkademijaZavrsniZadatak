@@ -23,7 +23,9 @@
             <ul class="navbar-nav ml-auto">
                 <?php if (isset($_SESSION['username'])) : ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?= URLROOT ?>/User/shoppingCart">Shopping Cart </a>
+                        <a class="nav-link" href="<?= URLROOT ?>/User/shoppingCart">Shopping Cart
+                            <span class="badge badge-secondary"><?=count($_SESSION['cart'])?> </span></h3>
+                        </a>
                     </li>
                     <?php if ($_SESSION['role'] == 'admin') : ?>
                         <li class="nav-item">

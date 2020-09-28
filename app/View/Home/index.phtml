@@ -63,6 +63,7 @@
                                     <h5>$ <?= $product->product_price ?></h5>
                                     <p class="card-text">Product description:</p>
                                     <p class="card-text"><?= $product->product_description ?> </p>
+                                    <p class="card-text">Product Id: <?= $product->id ?> </p>
                                     <?php if (isset($_SESSION['cart'])) : ?>
                                     <div class="col text-center">
                                         <a href="?id=<?= $product->id ?> " class="btn btn-outline-success">Add to Cart</a>
