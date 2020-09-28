@@ -71,4 +71,32 @@
         </div>
     </div>
 
+
+    <div class="container table-responsive py-5">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+
+            <tr class="text-center">
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">Change Sale Status</th>
+            </tr>
+            <?php foreach ($data['productsArray'] as $product) : ?>
+            </thead>
+            <tbody>
+            <tr class="text-center">
+                <td scope="row"><?= $product->id ?></td>
+                <td><?= $product->product_name ?></td>
+                <td>$<?= $product->product_price ?></td>
+                <td><?= $product->product_description ?></td>
+                <td><?= ($product->product_active == 0) ? ' <button type="button" name="changeActivity" class="btn btn-success">Activate</button>' : '<button type="button" class="btn btn-danger">Deactivate</button>'; ?></td>
+
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+
+
 <?php require APPROOT . '/View/inc/footer.phtml' ?>

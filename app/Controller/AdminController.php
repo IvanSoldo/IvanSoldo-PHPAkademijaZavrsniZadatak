@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Core\Controller;
 use App\Core\Request;
-use App\Repository\ProductRepository;
 use App\Service\AdminService;
+use App\Service\ProductService;
 use App\Service\UserService;
 
 class AdminController extends Controller
@@ -13,19 +13,18 @@ class AdminController extends Controller
 
     private $userService;
     private $adminService;
+    private $productService;
 
     public function __construct()
     {
         $this->userService = new UserService();
         $this->adminService = new AdminService();
+        $this->productService = new ProductService();
 
     }
 
     public function indexAction()
     {
-
-        //echo '<img src="data:image/jpeg;base64,'.base64_encode( $sofa->getData('product_picture') ).'"/>';
-
 
         if(!array_key_exists('role', $_SESSION)) {//TODO: refactor to method
             header('location: ' . URLROOT);
@@ -70,9 +69,6 @@ class AdminController extends Controller
             } else {
                 $this->view('Admin/addAdmin', $data);
             }
-
-
-
 
         } else {
             $data = [
@@ -127,7 +123,10 @@ class AdminController extends Controller
                 'productPriceError'=> '',
                 'productCategoryError'=> '',
                 'productImageError'=>'',
+                'productsArray'=>$this->productService->getProducts()
             ];
+
+
 
 
             $data = $this->adminService->checkProductData($data);
@@ -150,7 +149,8 @@ class AdminController extends Controller
                 'productNameError'=> '',
                 'productPriceError'=> '',
                 'productCategoryError'=> '',
-                'productImageError'=>''
+                'productImageError'=>'',
+                'productsArray'=>$this->productService->getProducts()
             ];
 
 

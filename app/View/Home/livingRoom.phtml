@@ -40,9 +40,11 @@
                             <p class="card-text">Product description:</p>
                             <p class="card-text"><?= $product->product_description ?> </p>
                             <p class="card-text">Product Id: <?= $product->id ?> </p>
-                            <div class="col text-center">
-                                <a href="?id=<?= $product->id ?> " class="btn btn-outline-success">Add to Cart</a>
-                            </div>
+                            <?php if (isset($_SESSION['cart'])) : ?>
+                                <div class="col text-center">
+                                    <a href="?id=<?= $product->id ?> " class="btn btn-outline-success">Add to Cart</a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
