@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Core\Controller;
 
+use App\Repository\OrderRepository;
 use App\Service\AdminService;
 use App\Service\CartService;
 use App\Service\ProductService;
