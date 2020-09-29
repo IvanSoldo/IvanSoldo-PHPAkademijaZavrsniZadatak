@@ -1,0 +1,38 @@
+<?php require APPROOT . '/View/inc/header.phtml'?>
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card card-body bg-light mt-5">
+            <?php flash('register_success'); ?>
+            <h2 class="text-center">Login</h2>
+            <p class="text-center">Please fill out this form to login</p>
+            <form action="<?php echo URLROOT; ?>/User/login" method="post">
+                <div class="form-group">
+                    <label for="username">Username:*</label>
+                    <input type="text" name="username" class="form-control form-control-lg
+                        <?php echo (!empty($data['usernameError'])) ? 'is-invalid' : '';?>" value="<?php echo $data['username'];?>">
+                    <span class="invalid-feedback"> <?php echo $data['usernameError']; ?> </span>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:*</label>
+                    <input type="password" name="password" class="form-control form-control-lg
+                        <?php echo (!empty($data['passwordError'])) ? 'is-invalid' : '';?>">
+                    <span class="invalid-feedback"> <?php echo $data['passwordError']; ?> </span>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input type="submit" value="Login" class="btn btn-success">
+                    </div>
+                    <div class="col">
+                        <a href="<?php echo URLROOT; ?>/User/register" class="btn btn-light btn-block">
+                            Don't have an account? Register
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php require APPROOT . '/View/inc/footer.phtml'?>

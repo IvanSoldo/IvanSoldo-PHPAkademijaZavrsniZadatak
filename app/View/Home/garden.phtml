@@ -1,0 +1,60 @@
+<?php require APPROOT . '/View/inc/header.phtml' ?>
+
+
+    <div class="col-md-6 mx-auto">
+        <div class="card card-body bg-light mt-5">
+            <?php flash('register_success'); ?>
+            <h2 class="text-center">Garden</h2>
+            <p class="text-center">What's the perfect garden furniture set? Well, it depends… If you're looking for a
+                set with room enough for a dinner party, a set with a large extending table is ideal. If you want extra
+                comfort while sitting at the table, recliner chairs will let you lean back and relax. If you're looking
+                for a set that's easy to move, light chairs and a smaller table will give you plenty of flexibility.
+                Whatever your patio plans are, you'll find plenty of solutions at Webshop.</p>
+            <div class="row">
+                <div class="col">
+                    <a href="<?= URLROOT ?>/Home/diningRoom" class="list-group-item text-center">Dining Room</a>
+                </div>
+                <div class="col">
+                    <a href="<?= URLROOT ?>/Home/livingRoom" class="list-group-item text-center">Living Room</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <?php
+            foreach ($data as $product) {
+
+                ?>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top"
+                                         src="data:image/jpeg;base64, <?php echo base64_encode($product->product_picture) ?> "
+                                         alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#"><?= $product->product_name ?></a>
+                            </h4>
+                            <h5>$ <?= $product->product_price ?></h5>
+                            <p class="card-text">Product description:</p>
+                            <p class="card-text"><?= $product->product_description ?> </p>
+                            <p class="card-text">Product Id: <?= $product->id ?> </p>
+                            <?php if (isset($_SESSION['cart'])) : ?>
+                                <div class="col text-center">
+                                    <a href="?id=<?= $product->id ?> " class="btn btn-outline-success">Add to Cart</a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
+    </div>
+
+
+<?php require APPROOT . '/View/inc/footer.phtml' ?>

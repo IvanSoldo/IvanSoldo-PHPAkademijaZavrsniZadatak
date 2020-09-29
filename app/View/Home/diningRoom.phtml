@@ -1,0 +1,56 @@
+<?php require APPROOT . '/View/inc/header.phtml' ?>
+
+
+    <div class="col-md-6 mx-auto">
+        <div class="card card-body bg-light mt-5">
+            <?php flash('register_success'); ?>
+            <h2 class="text-center">Dining Room</h2>
+            <p class="text-center">The dining room is a central spot of the home, place to catch up with family, host dinner parties and tuck into tasty food.</p>
+            <div class="row">
+                <div class="col">
+                    <a href="<?= URLROOT ?>/Home/garden" class="list-group-item text-center">Garden</a>
+                </div>
+                <div class="col">
+                    <a href="<?= URLROOT ?>/Home/livingRoom" class="list-group-item text-center">Living Room</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <?php
+            foreach ($data as $product) {
+
+                ?>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top"
+                                         src="data:image/jpeg;base64, <?php echo base64_encode($product->product_picture) ?> "
+                                         alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#"><?= $product->product_name ?></a>
+                            </h4>
+                            <h5>$ <?= $product->product_price ?></h5>
+                            <p class="card-text">Product description:</p>
+                            <p class="card-text"><?= $product->product_description ?> </p>
+                            <p class="card-text">Product Id: <?= $product->id ?> </p>
+                            <?php if (isset($_SESSION['cart'])) : ?>
+                                <div class="col text-center">
+                                    <a href="?id=<?= $product->id ?> " class="btn btn-outline-success">Add to Cart</a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
+    </div>
+
+
+<?php require APPROOT . '/View/inc/footer.phtml' ?>

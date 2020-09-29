@@ -1,0 +1,104 @@
+<?php require APPROOT . '/View/inc/header.phtml' ?>
+
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card card-body bg-light mt-5">
+                <?php flash('register_success'); ?>
+                <h2 class="text-center">Add Product</h2>
+                <form action="<?php echo URLROOT; ?>/Admin/manageProducts" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="productName">Product Name:*</label>
+                        <input type="text" name="productName" class="form-control form-control-lg
+                        <?php echo (!empty($data['productNameError'])) ? 'is-invalid' : ''; ?>"
+                               value="<?php echo $data['productName']; ?>">
+                        <span class="invalid-feedback"> <?php echo $data['productNameError']; ?> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Product Price:*</label>
+                        <input type="text" name="productPrice" class="form-control form-control-lg
+                        <?php echo (!empty($data['productPriceError'])) ? 'is-invalid' : ''; ?>"
+                               value="<?php echo $data['productPrice']; ?>">
+                        <span class="invalid-feedback"> <?php echo $data['productPriceError']; ?> </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Product Description:*</label>
+                        <input type="text" name="productDescription" class="form-control form-control-lg
+                        <?php echo (!empty($data['productDescriptionError'])) ? 'is-invalid' : ''; ?>"
+                               value="<?php echo $data['productDescription']; ?>">
+                        <span class="invalid-feedback"> <?php echo $data['productDescriptionError']; ?> </span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="text-center">
+                            <label>Product Catergory:*</label>
+                        </div>
+                        <div class="text-center">
+                            <?php
+                            foreach ($data['categoryArr'] as $category) {
+                                ?>
+
+                                <label class="radio-inline">
+                                    <input type="checkbox" name="categories[<?php echo $category; ?>]"
+                                           value="<?= $category ?>"> <?php echo '  ' . $category . '  '; ?>
+                                </label>
+
+                                <?php
+                            }
+                            ?>
+                        </div>
+                        <p class="text-center text-danger"><?= $data['productCategoryError'] ?></p>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <label class="custom-file-label" for="productImage">Choose image</label>
+                            <input type="file" name="productImage" class="custom-file-input" id="productImage">
+                        </div>
+                    </div>
+                    <p class="text-center text-danger"><?= $data['productImageError'] ?></p>
+                    <div class="row">
+                        <div class="col text-center">
+                            <input type="submit" value="Add Product" class="btn btn-success">
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container table-responsive py-5">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+
+            <tr class="text-center">
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                <th scope="col">Change Sale Status</th>
+            </tr>
+            <?php foreach ($data['productsArray'] as $product) : ?>
+            </thead>
+            <tbody>
+            <tr class="text-center">
+                <td scope="row"><?= $product->id ?></td>
+                <td><?= $product->product_name ?></td>
+                <td>$<?= $product->product_price ?></td>
+                <td><?= $product->product_description ?></td>
+                <form action="<?php echo URLROOT; ?>/Admin/manageProducts" method="get">
+                    <td><?= ($product->product_active == 0) ? ' <button name="Activate" class="btn btn-outline-success">Activate</button>' : '<button name="Deactivate" class="btn btn-outline-danger">Deactivate</button>'; ?></td>
+                    <input type="hidden" class="form-control" name="id" value="<?= $product->id ?>">
+                </form>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+
+
+<?php require APPROOT . '/View/inc/footer.phtml' ?>
