@@ -159,7 +159,7 @@ class AdminController extends Controller
                 $this->adminService->changeProductStatus($data['productsArray'], $id);
                 header('location: ' . URLROOT.'/Admin/manageProducts');
             }
-            
+
             if(!array_key_exists('role', $_SESSION)) {
                 header('location: ' . URLROOT);
 

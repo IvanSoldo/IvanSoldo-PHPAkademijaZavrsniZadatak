@@ -82,7 +82,7 @@ class UserRepository {
     {
         $user ='';
         $db = Database::getInstance();
-        $statement = $db->prepare('select u.email, u.username, u.first_name, u.last_name, u.password, 
+        $statement = $db->prepare('select u.id, u.email, u.username, u.first_name, u.last_name, u.password, 
             a.city_name as city, a.postal_code as postalCode, a.address as address, r.name as role
             from user u
             inner join address a on u.address_id = a.id
@@ -93,6 +93,7 @@ class UserRepository {
 
         $user = $statement->fetch();
         $user = new User([
+                'id'=>$user->id,
                 'email' => $user->email,
                 'username' => $user->username,
                 'firstname' => $user->first_name,
@@ -107,15 +108,6 @@ class UserRepository {
         return $user;
     }
 
-    public function updatePassword($password, $username) {
-
-        $db = Database::getInstance();
-        $statement = $db->prepare('UPDATE user SET password=:password WHERE username=:username;');
-        $statement->bindValue('password', $password);
-        $statement->bindValue('username',$username);
-        $statement->execute();
-
-    }
 
 
 }

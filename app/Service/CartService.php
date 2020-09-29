@@ -3,17 +3,20 @@
 namespace App\Service;
 
 
+use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 
 class CartService
 {
 
     private $productRepository;
+    private $orderRepository;
 
     public function __construct()
     {
 
         $this->productRepository = new ProductRepository();
+        $this->orderRepository = new OrderRepository();
 
     }
 
@@ -58,6 +61,13 @@ class CartService
 
     public function updateCart($data) {
         (isset($_POST['changeQuantity'])) ? $this->changeQuantityOfProduct($data) : $this->deleteProductFromCart($data);
+
+    }
+
+    public function Buy() {
+        $this->orderRepository->insertOrder();
+        $_SESSION['cart'] = array();
+
 
     }
 

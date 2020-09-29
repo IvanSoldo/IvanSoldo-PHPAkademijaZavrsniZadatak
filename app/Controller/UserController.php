@@ -185,6 +185,12 @@ class UserController extends Controller
 
             $this->cartService->updateCart($data);
 
+
+            if (isset($_POST['buy'])) {
+                flash('register_success', 'Order submitted! Thank you!');
+                $this->cartService->Buy();
+            }
+
             $this->view('User/shoppingCart', $data);
 
         } else {

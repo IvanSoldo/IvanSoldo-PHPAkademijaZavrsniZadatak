@@ -131,6 +131,7 @@ class UserService
 
     private function createUserSession($user)
     {
+        $_SESSION['userId'] = $user->getData('id');
         $_SESSION['username'] = $user->getData('username');
         $_SESSION['role'] = $user->getData('role');
         $_SESSION['cart'] = array();
@@ -138,6 +139,7 @@ class UserService
 
     public function logout()
     {
+        unset($_SESSION['id']);
         unset($_SESSION['username']);
         unset($_SESSION['role']);
         unset($_SESSION['cart']);

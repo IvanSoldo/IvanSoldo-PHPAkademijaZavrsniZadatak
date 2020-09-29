@@ -28,7 +28,6 @@ class HomeController extends Controller{
     public function indexAction() {
 
         $this->cartService->getProductId();
-
         $data = $this->productService->getFilteredProducts();
 
         $this->view('Home/index', $data);
