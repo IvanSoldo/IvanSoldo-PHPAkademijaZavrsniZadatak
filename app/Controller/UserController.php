@@ -183,15 +183,8 @@ class UserController extends Controller
                 'productQuantity' => Request::getPostParam('quantity')
             ];
 
-            /*
-            for ($i = 0; $i < count($_SESSION['cart']); $i++) {
-                $product = unserialize($_SESSION['cart'][$i]);
-                if ($product->getData('id') == $data['productId']) {
-                    $product->setData('quantity', $data['productQuantity']);
-                    $product->setdata('quantity', $product->getData('quantity'));
-                    $_SESSION['cart'][$i] = serialize($product); //TODO:same method with unset to delete from cart.
-                }
-            } */
+
+            $this->cartService->updateCart($data);
 
             $this->view('User/shoppingCart', $data);
 

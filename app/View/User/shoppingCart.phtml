@@ -32,7 +32,10 @@
                                         <input type="number" min="1" max="999" class="form-control" name="quantity" value="<?=unserialize($product)->quantity ?>">
                                         <input type="hidden" class="form-control" name="id" value="<?= unserialize($product)->id ?>">
                                         <div class="m-md-1">
-                                            <input type="submit" value="Change Quantity" class="btn btn-success">
+                                            <input type="submit" name="changeQuantity" value="Change Quantity" class="btn btn-outline-success">
+                                        </div>
+                                        <div class="m-md-1">
+                                            <input type="submit" name="deleteFromCart" value="Delete from Cart" class="btn btn-outline-warning">
                                         </div>
                                     </div>
                                 </div>
