@@ -17,15 +17,17 @@ class CartService
 
     }
 
-    public function getProductId()
+    public function getProductId() //TODO:Wrap every if in method
     {
 
-        if (!empty($_GET['id'])) {
-            if (is_numeric($_GET['id'])) {
-                if ($this->productRepository->checkIfProductExistById($_GET['id'])) {
-                    $product = $this->productRepository->getProduct(intval($_GET['id']));
-                    array_push($_SESSION['cart'], serialize($product));
-                    $_SESSION['cart'] = array_unique($_SESSION['cart']);
+        if (isset($_SESSION['cart'])) {
+            if (!empty($_GET['id'])) {
+                if (is_numeric($_GET['id'])) {
+                    if ($this->productRepository->checkIfProductExistById($_GET['id'])) {
+                        $product = $this->productRepository->getProduct(intval($_GET['id']));
+                        array_push($_SESSION['cart'], serialize($product));
+                        $_SESSION['cart'] = array_unique($_SESSION['cart']);
+                    }
                 }
             }
         }

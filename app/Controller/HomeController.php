@@ -29,7 +29,7 @@ class HomeController extends Controller{
 
         $this->cartService->getProductId();
 
-        $data = $this->productService->getProducts();
+        $data = $this->productService->getFilteredProducts();
 
         $this->view('Home/index', $data);
     }

@@ -183,7 +183,6 @@ class UserController extends Controller
                 'productQuantity' => Request::getPostParam('quantity')
             ];
 
-
             $this->cartService->updateCart($data);
 
             $this->view('User/shoppingCart', $data);

@@ -4,17 +4,20 @@ namespace App\Service;
 
 use App\Repository\ProductRepository;
 
-class AdminService {
+class AdminService
+{
 
     private $productRepository;
 
-    public function __construct() {
+    public function __construct()
+    {
 
         $this->productRepository = new ProductRepository();
 
     }
 
-    public function checkProductData($data) {
+    public function checkProductData($data)
+    {
 
         if (empty($data['productName'])) {
             $data['productNameError'] = 'Please enter product name';
@@ -44,47 +47,75 @@ class AdminService {
             $data['productCategoryError'] = 'At least one category has to be selected.';
         }
 
-       if (empty($data['productImageBlob'])) {
-           $data['productImageError'] = 'Image is required';
-       } else {
-           if (!$this->isImage($data['productImageBlob'])) {
-               $data['productImageError'] = 'Only images allowed.';
-           } else if ($data['productImageSize'] > 65535) {
-               $data['productImageError'] = 'Maximum size of image is 64 KB.';
-           } else if($data['productImageErr'] != 0) {
-               $data['productImageError'] = 'Something went wrong with image upload.';
-           }
-       }
+        if (empty($data['productImageBlob'])) {
+            $data['productImageError'] = 'Image is required';
+        } else {
+            if (!$this->isImage($data['productImageBlob'])) {
+                $data['productImageError'] = 'Only images allowed.';
+            } else if ($data['productImageSize'] > 65535) {
+                $data['productImageError'] = 'Maximum size of image is 64 KB.';
+            } else if ($data['productImageErr'] != 0) {
+                $data['productImageError'] = 'Something went wrong with image upload.';
+            }
+        }
         return $data;
     }
 
-    private function isImage($img){
+    private function isImage($img)
+    {
         return (bool)getimagesize($img);
     }
 
-    public function isRadioButtonSet($categories) {
+    public function isRadioButtonSet($categories)
+    {
         if (isset($_POST['categories'])) {
             return $categories = $_POST['categories'];
         }
     }
 
-    public function getCategories() {
+    public function getCategories()
+    {
         return $this->productRepository->getCategories();
     }
 
-    public function isProductDataValid($data) {
+    public function isProductDataValid($data)
+    {
         if (empty($data['productNameError']) && empty($data['productPriceError']) && empty($data['productCategoryError']) && empty($data['productImageError'])) {
             return true;
         }
         return false;
     }
 
-    public function addProduct($data) {
+    public function addProduct($data)
+    {
         $this->productRepository->insertProduct($data);
     }
 
 
+    public function changeProductStatus($data, $id)
+    {
 
+        $status = 1;
+        if (isset($_GET['Activate'])) {
+            for ($i = 0; $i < count($data); $i++) {
+                if ($data[$i]->id == $id) {
+                    $this->productRepository->changeStatus($data[$i]->id, $status);
+                }
+            }
+        }
+
+        if (isset($_GET['Deactivate'])) {
+            for ($i = 0; $i < count($data); $i++) {
+                if ($data[$i]->id == $id) {
+                    $status = 0;
+                    $this->productRepository->changeStatus($data[$i]->id, $status);
+                }
+            }
+
+        }
+
+
+    }
 
 
 }

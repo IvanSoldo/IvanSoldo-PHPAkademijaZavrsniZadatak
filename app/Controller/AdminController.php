@@ -123,11 +123,8 @@ class AdminController extends Controller
                 'productPriceError'=> '',
                 'productCategoryError'=> '',
                 'productImageError'=>'',
-                'productsArray'=>$this->productService->getProducts()
+                'productsArray'=>$this->productService->getProducts(),
             ];
-
-
-
 
             $data = $this->adminService->checkProductData($data);
             if ($this->adminService->isProductDataValid($data)) {
@@ -139,7 +136,11 @@ class AdminController extends Controller
             }
 
 
+
         } else {
+
+
+
             $data = [
                 'productName'=> '',
                 'productPrice'=> '',
@@ -153,7 +154,12 @@ class AdminController extends Controller
                 'productsArray'=>$this->productService->getProducts()
             ];
 
-
+            if (!empty($_GET['id'])) {
+                $id = $_GET['id'];
+                $this->adminService->changeProductStatus($data['productsArray'], $id);
+                header('location: ' . URLROOT.'/Admin/manageProducts');
+            }
+            
             if(!array_key_exists('role', $_SESSION)) {
                 header('location: ' . URLROOT);
 

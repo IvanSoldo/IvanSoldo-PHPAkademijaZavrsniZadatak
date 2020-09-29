@@ -25,7 +25,7 @@ class ProductRepository {
     public function checkIfProductExistById($id)
     {
         $db = Database::getInstance();
-        $statement = $db->prepare('SELECT `product_name` FROM `product` where `id` = (?)', [$id]);
+        $statement = $db->prepare('SELECT `product_name` FROM `product` where `id` = (?) and product_active = 1', [$id]);
         $statement->execute([$id]);
         $fetched = $statement->rowCount();
         return (bool)$fetched;
@@ -47,6 +47,18 @@ class ProductRepository {
         $list = [];
         $db = Database::getInstance();
         $statement = $db->prepare('select * from product');
+        $statement->execute();
+        $products = $statement->fetchAll();
+        foreach ($products as $product) {
+            array_push($list, $product);
+        }
+        return $list;
+    }
+
+    public function getFilteredProducts() {
+        $list = [];
+        $db = Database::getInstance();
+        $statement = $db->prepare('select * from product where product_active = 1');
         $statement->execute();
         $products = $statement->fetchAll();
         foreach ($products as $product) {
@@ -107,27 +119,28 @@ class ProductRepository {
     public function getProduct($id) {
 
         $db = Database::getInstance();
-        $statement= $db->prepare('SELECT * FROM product where id = :id;');
+        $statement= $db->prepare('SELECT * FROM product where id = :id and product_active = 1;');
         $statement->bindValue('id', $id);
         $statement->execute();
         $product = $statement->fetch();
-        $product = new Product([
-            'id' => $product->id,
-            'product_name' => $product->product_name,
-            'product_price' => floatval($product->product_price),
-            'product_description' => $product->product_description,
-            'product_picture'=> $product->product_picture,
-            'product_active'=>$product->product_active,
-        ]);
-
-        $product->setData('quantity', 1);
+        if (is_object($product)) {
+            $product = new Product([
+                'id' => $product->id,
+                'product_name' => $product->product_name,
+                'product_price' => floatval($product->product_price),
+                'product_description' => $product->product_description,
+                'product_picture'=> $product->product_picture,
+                'product_active'=>intval($product->product_active),
+            ]);
+            $product->setData('quantity', 1);
+        }
         return $product;
-
     }
+
+
 
     private function getCategoryId($category)
     {
-
         $db = Database::getInstance();
         $statement = $db->prepare('SELECT id from category where category_name  = :categoryName ;');
         $statement->bindValue('categoryName',$category );
@@ -136,6 +149,14 @@ class ProductRepository {
         $categoryName = $id['id'];
         $categoryName = intval($categoryName);
         return $categoryName;
+    }
+
+    public function changeStatus($id,$status) {
+        $db = Database::getInstance();
+        $statement = $db->prepare('update product set product_active = :status WHERE id = :id;');
+        $statement->bindValue('id',$id);
+        $statement->bindValue('status',$status);
+        $statement->execute();
 
     }
 
