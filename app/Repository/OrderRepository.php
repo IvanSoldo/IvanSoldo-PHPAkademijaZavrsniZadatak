@@ -29,7 +29,6 @@ class OrderRepository {
         }
 
     }
-    
 
     private function getOrderId () {
         $db = Database::getInstance();
