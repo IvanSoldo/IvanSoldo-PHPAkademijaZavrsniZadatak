@@ -9,8 +9,6 @@ use App\Service\ProductService;
 
 class HomeController extends Controller{
 
-    //TODO:Sanitize string before post method
-
     private $productService;
     private $cartService;
 

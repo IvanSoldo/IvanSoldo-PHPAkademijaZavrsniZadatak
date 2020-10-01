@@ -21,7 +21,6 @@ class UserService
     public function checkRegisterData($data)
     {
 
-        //TODO: change if empty check into 1 private dynamic method.
         if (empty($data['email'])) {
             $data['emailError'] = 'Please enter email';
         } else {
@@ -131,6 +130,9 @@ class UserService
 
     private function createUserSession($user)
     {
+
+        session_regenerate_id(true);
+
         $_SESSION['userId'] = $user->getData('id');
         $_SESSION['username'] = $user->getData('username');
         $_SESSION['role'] = $user->getData('role');
@@ -139,11 +141,8 @@ class UserService
 
     public function logout()
     {
-        unset($_SESSION['id']);
-        unset($_SESSION['username']);
-        unset($_SESSION['role']);
-        unset($_SESSION['cart']);
-        session_destroy();
+        $_SESSION = array();
+
         header('location: ' . URLROOT . '/User/login');
     }
 
@@ -167,7 +166,7 @@ class UserService
         return $data;
     }
 
-    public function isSettingsDataValid($data) { //TODO: password must be 6 length
+    public function isSettingsDataValid($data) {
         if (empty($data['passwordError']) && empty($data['confirmPasswordError'])) {
             return true;
         }

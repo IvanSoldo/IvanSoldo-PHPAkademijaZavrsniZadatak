@@ -20,7 +20,7 @@ class CartService
 
     }
 
-    public function getProductId() //TODO:Wrap every if in method
+    public function getProductId()
     {
 
         if (isset($_SESSION['cart'])) {

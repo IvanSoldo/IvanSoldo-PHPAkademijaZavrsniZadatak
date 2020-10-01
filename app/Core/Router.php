@@ -19,7 +19,7 @@ class Router {
         $className = CN . $this->currentController . 'Controller';
         $this->currentController = new $className;
 
-        if (isset($url[1])) { //TODO: Redirect to error page if method not found
+        if (isset($url[1])) { //TODO: Catch router exception
             if (method_exists($this->currentController, $url[1] . 'Action')) {
                 $this->currentMethod = $url[1] . 'Action';
                 unset($url[1]);
@@ -34,7 +34,6 @@ class Router {
 
     private function getUrl() {
         if (isset($_GET['url'])) {
-            //TODO:Remove polaznik
             $url = rtrim($_GET['url'], '/'); //remove last / if exists
             $url = filter_var($url, FILTER_SANITIZE_URL); // making sure nothing is there an url wouldn't have
             $url = explode('/', $url);
