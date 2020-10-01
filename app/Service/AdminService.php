@@ -2,17 +2,20 @@
 
 namespace App\Service;
 
+use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 
 class AdminService
 {
 
     private $productRepository;
+    private $orderRepository;
 
     public function __construct()
     {
 
         $this->productRepository = new ProductRepository();
+        $this->orderRepository = new OrderRepository();
 
     }
 
@@ -111,6 +114,29 @@ class AdminService
                     $this->productRepository->changeStatus($data[$i]->id, $status);
                 }
             }
+
+        }
+    }
+
+    public function getAllOrders() {
+
+        return $this->orderRepository->getAllOrders();
+    }
+
+    public function printAllOrders() {
+        if (isset($_POST['print'])) {
+            $orders = $this->orderRepository->getAllOrders();
+
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename=data.csv');
+            $output = fopen('php://output', 'w');
+            fputcsv($output, array('order id','order date','customer name'),";");
+
+            for ($i=0;$i<count($orders);$i++) {
+                $csv[$i] = array($orders[$i]->id,$orders[$i]->orderDate,$orders[$i]->fullName);
+                fputcsv($output, $csv[$i], ";");
+            }
+            fclose($output);
 
         }
 

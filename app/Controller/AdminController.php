@@ -139,8 +139,6 @@ class AdminController extends Controller
 
         } else {
 
-
-
             $data = [
                 'productName'=> '',
                 'productPrice'=> '',
@@ -169,6 +167,29 @@ class AdminController extends Controller
                 $this->view('Admin/manageProducts', $data);
             }
         }
+
+    }
+
+    public function ordersAction() {
+
+        if ($this->isPost()) {
+
+            $this->adminService->printAllOrders();
+
+        } else {
+
+            if(!array_key_exists('role', $_SESSION)) {
+                header('location: ' . URLROOT);
+
+            } else if ($_SESSION['role'] != 'admin') {
+                header('location: ' . URLROOT);
+            } else {
+
+                $data = $this->adminService->getAllOrders();
+                $this->view('Admin/orders', $data);
+            }
+        }
+
 
     }
 

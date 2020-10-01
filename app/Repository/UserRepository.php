@@ -43,7 +43,6 @@ class UserRepository {
         $statement->bindValue('city', $data['city']);
         $statement->bindValue('postalCode', $data['postalCode']);
         $statement->bindValue('address', $data['address']);
-
         $statement->execute();
 
     }

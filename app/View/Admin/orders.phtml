@@ -1,0 +1,30 @@
+<?php require APPROOT . '/View/inc/header.phtml'?>
+
+    <h1 class="text-center">Orders</h1>
+    <p class="text-center">View and download all orders</p>
+    <div class="container table-responsive py-5">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+
+            <tr class="text-center">
+                <th scope="col">Id</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Customer</th>
+
+            <?php foreach ($data as $order) : ?>
+            </thead>
+            <tbody>
+            <tr class="text-center">
+                <td><?=$order->id ?></td>
+                <td><?=$order->orderDate ?></td>
+                <td><?=$order->fullName ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <form action="<?php echo URLROOT; ?>/Admin/orders" method="post">
+            <div class="col text-center">
+                <input type="submit" name="print" value="Print orders" class="btn btn-outline-success">
+            </div>
+        </form>
+    </div>
+<?php require APPROOT . '/View/inc/footer.phtml'?>

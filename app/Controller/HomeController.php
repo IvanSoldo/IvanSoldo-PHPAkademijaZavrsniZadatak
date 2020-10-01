@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Core\Controller;
-
-use App\Service\AdminService;
 use App\Service\CartService;
 use App\Service\ProductService;
 
@@ -14,13 +12,12 @@ class HomeController extends Controller{
     //TODO:Sanitize string before post method
 
     private $productService;
-    private $adminService;
     private $cartService;
 
     public function __construct() {
         $this->productService = new ProductService();
-        $this->adminService = new AdminService();
         $this->cartService = new CartService();
+
     }
 
     public function indexAction() {
