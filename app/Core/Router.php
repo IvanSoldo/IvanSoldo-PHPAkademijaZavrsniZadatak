@@ -34,6 +34,7 @@ class Router {
 
     private function getUrl() {
         if (isset($_GET['url'])) {
+            //TODO:Remove polaznik
             $url = rtrim($_GET['url'], '/'); //remove last / if exists
             $url = filter_var($url, FILTER_SANITIZE_URL); // making sure nothing is there an url wouldn't have
             $url = explode('/', $url);

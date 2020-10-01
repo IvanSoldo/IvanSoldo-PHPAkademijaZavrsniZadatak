@@ -4,17 +4,14 @@ namespace App\Controller;
 
 use App\Core\Controller;
 
-use App\Repository\OrderRepository;
 use App\Service\AdminService;
 use App\Service\CartService;
 use App\Service\ProductService;
 
 
-//TODO: add htmlspeacialchars to input fields/textarea/limit text length
-//TODO: Carosel pictures not loading when method from HomeController isnt found
-
-
 class HomeController extends Controller{
+
+    //TODO:Sanitize string before post method
 
     private $productService;
     private $adminService;
@@ -46,7 +43,7 @@ class HomeController extends Controller{
 
         $this->cartService->getProductId();
 
-        $data['id'] = 2;
+        $data['id'] = 1;
         $data = $this->productService->getProductsFromCategory($data);
         $this->view('Home/diningRoom', $data);
     }
@@ -55,7 +52,7 @@ class HomeController extends Controller{
 
         $this->cartService->getProductId();
 
-        $data['id'] = 3;
+        $data['id'] = 2;
         $data = $this->productService->getProductsFromCategory($data);
         $this->view('Home/garden', $data);
     }
@@ -64,7 +61,7 @@ class HomeController extends Controller{
 
         $this->cartService->getProductId();
 
-        $data['id'] = 1;
+        $data['id'] = 3;
         $data = $this->productService->getProductsFromCategory($data);
         $this->view('Home/livingRoom', $data);
     }
