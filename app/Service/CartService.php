@@ -40,9 +40,13 @@ class CartService
 
         for ($i = 0; $i < count($_SESSION['cart']); $i++) {
             $product = unserialize($_SESSION['cart'][$i]);
-            if ($product->getData('id') == $data['productId']) {
-                $product->setData('quantity', $data['productQuantity']);
-                $_SESSION['cart'][$i] = serialize($product);
+            if (is_numeric($data['productQuantity'])) {
+                if ($product->getData('id') == $data['productId']) {
+                    if ($data['productQuantity'] >= 0 && $data['productQuantity'] <= 999) {
+                        $product->setData('quantity', $data['productQuantity']);
+                        $_SESSION['cart'][$i] = serialize($product);
+                    }
+                }
             }
         }
 
@@ -65,9 +69,18 @@ class CartService
     }
 
     public function Buy() {
-        $this->orderRepository->insertOrder();
-        $_SESSION['cart'] = array();
 
+        $isValid = true;
+        foreach ($_SESSION['cart'] as $product) {
+            $product = unserialize($product);
+            if ($product->quantity < 1) {
+                $isValid = false;
+            }
+        }
+        if ($isValid) {
+            $this->orderRepository->insertOrder();
+            $_SESSION['cart'] = array();
+        }
 
     }
 
