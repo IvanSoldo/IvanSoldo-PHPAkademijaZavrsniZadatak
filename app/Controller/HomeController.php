@@ -62,6 +62,7 @@ class HomeController extends Controller{
     }
 
     public function productPageAction($id){
+
         $product = $this->productService->getSingleProduct($id);
         $data = [
           'product'=>$product
@@ -71,9 +72,6 @@ class HomeController extends Controller{
 
         $this->view('Home/productPage',$data);
     }
-
-
-
 
 
 }
