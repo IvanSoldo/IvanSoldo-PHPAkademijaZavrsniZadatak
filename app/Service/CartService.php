@@ -5,18 +5,21 @@ namespace App\Service;
 
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 
 class CartService
 {
 
     private $productRepository;
     private $orderRepository;
+    private $userRepository;
 
     public function __construct()
     {
 
         $this->productRepository = new ProductRepository();
         $this->orderRepository = new OrderRepository();
+        $this->userRepository = new UserRepository();
 
     }
 
@@ -37,7 +40,7 @@ class CartService
     }
 
     private function changeQuantityOfProduct($data) {
-
+        $_SESSION['cart'] = array_values($_SESSION['cart']);
         for ($i = 0; $i < count($_SESSION['cart']); $i++) {
             $product = unserialize($_SESSION['cart'][$i]);
             if (is_numeric($data['productQuantity'])) {
@@ -68,7 +71,13 @@ class CartService
 
     }
 
-    public function Buy() {
+
+    public function customerInfo() {
+        return $this->userRepository->getUserByUsername($_SESSION['username']);
+    }
+
+
+    public function buy() {
 
         $isValid = true;
         foreach ($_SESSION['cart'] as $product) {
