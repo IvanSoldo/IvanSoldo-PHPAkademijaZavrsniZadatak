@@ -61,6 +61,17 @@ class HomeController extends Controller{
         $this->view('Home/livingRoom', $data);
     }
 
+    public function productPageAction($id){
+        $product = $this->productService->getSingleProduct($id);
+        $data = [
+          'product'=>$product
+        ];
+
+        $this->cartService->getProductId();
+
+        $this->view('Home/productPage',$data);
+    }
+
 
 
 

@@ -40,6 +40,16 @@ class ProductService {
         return $this->productRepository->getProducts();
     }
 
+    public function getSingleProduct($id) {
+        if (!$this->productRepository->checkIfProductExistById($id)) {
+            header('location: ' . URLROOT);
+        } else {
+            return $this->productRepository->getProduct($id);
+        }
+    }
+
+
+
 
 
 }

@@ -1,0 +1,48 @@
+<?php require APPROOT . '/View/inc/header.phtml' ?>
+
+    <div class="container">
+
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-lg-9">
+
+                <div class="card mt-4">
+                    <a href="#"><img class="card-img-top"
+                                     src="data:image/jpeg;base64, <?php echo base64_encode($data['product']->product_picture) ?> "
+                                     alt=""></a>
+                    <div class="card-body text-center">
+                        <h3 class="card-title"><?= $data['product']->product_name ?></h3>
+                        <h4>$<?= $data['product']->product_price ?></h4>
+                        <p class="card-text"><?= $data['product']->product_description ?></p>
+                        <?php if (isset($_SESSION['cart'])) : ?>
+                            <div class="col">
+                                <a href="?id=<?= $data['product']->id ?> " class="btn btn-outline-success">Add to Cart</a>
+                            </div>
+                        <?php endif; ?>
+                        <br>
+                        <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9733;</span>
+                        5.0 stars
+                    </div>
+                </div>
+
+                <div class="card card-outline-secondary my-4">
+                    <div class="card-header">
+                        Product Reviews
+                    </div>
+                    <div class="card-body">
+                        <p>Great product !!</p>
+                        <small class="text-muted">Posted by Anonymous on 10/2/20</small>
+                        <hr>
+                        <p>Unbelievable product for such a low price.</p>
+                        <small class="text-muted">Posted by Anonymous on 10/2/20</small>
+                        <hr>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<?php require APPROOT . '/View/inc/footer.phtml' ?>

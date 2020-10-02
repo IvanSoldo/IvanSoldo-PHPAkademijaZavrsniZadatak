@@ -231,10 +231,9 @@ class UserController extends Controller
                 $this->view('User/checkout',$data);
             }
         }
-
-
-
     }
+
+
 
 
 }
