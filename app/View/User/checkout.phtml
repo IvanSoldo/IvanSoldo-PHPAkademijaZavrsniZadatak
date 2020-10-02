@@ -28,6 +28,12 @@
                     <strong>$<?=$data['totalPrice']?></strong>
                 </li>
             </ul>
+            <div class="text-center">
+                <form action="<?php echo URLROOT; ?>/User/checkout" method="post">
+                    <?php if(!empty($_SESSION['cart'])) : ?>
+                <input type="submit" name="buy" value="Buy" class="btn btn-outline-success btn-lg btn-block">
+                    <?php endif; ?>
+            </div>
 
         </div>
 
@@ -36,17 +42,17 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="firstName">First name</label>
-                    <p><?=$data['customerInfo']->getData('firstname') ?></p>
+                    <p class="font-weight-bold"><?=$data['customerInfo']->getData('firstname') ?></p>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="lastName">Last name</label>
-                    <p><?=$data['customerInfo']->getData('lastname') ?></p>
+                    <p class="font-weight-bold"><?=$data['customerInfo']->getData('lastname') ?></p>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="address">Address</label>
-                <p><?=$data['customerInfo']->getData('address') . ' ,'. $data['customerInfo']->getData('postalCode') . ' ' . $data['customerInfo']->getData('city')  ?></p>
+                <p class="font-weight-bold"><?=$data['customerInfo']->getData('address') . ' ,'. $data['customerInfo']->getData('postalCode') . ' ' . $data['customerInfo']->getData('city')  ?></p>
             </div>
 
 
@@ -56,10 +62,7 @@
             <p>Cash on delivery</p>
 
             <hr class="mb-4">
-            <form action="<?php echo URLROOT; ?>/User/checkout" method="post">
-                <?php if(!empty($_SESSION['cart'])) : ?>
-                    <input type="submit" name="buy" value="Buy" class="btn btn-success">
-                <?php endif; ?>
+
             </form>
 
         </div>
