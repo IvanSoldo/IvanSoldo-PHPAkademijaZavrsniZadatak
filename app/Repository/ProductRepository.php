@@ -86,7 +86,7 @@ class ProductRepository {
         }
     }
 
-    private function getProductId($productName)
+    public function getProductId($productName)
     {
         $db = Database::getInstance();
         $statement = $db->prepare('SELECT id from product where product_name = :productName;');

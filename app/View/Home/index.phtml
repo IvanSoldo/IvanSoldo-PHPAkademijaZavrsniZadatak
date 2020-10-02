@@ -58,16 +58,16 @@
                                                  alt=""></a>
                                 <div class="card-body">
                                     <h4 class="card-title">
-                                        <a href="#"><?= $product->product_name ?></a>
+                                        <a href="Home/productPage/<?=$product->id?>"><?= e($product->product_name) ?></a>
                                     </h4>
-                                    <h5>$ <?= $product->product_price ?></h5>
+                                    <h5>$ <?= e($product->product_price) ?></h5>
                                     <p class="card-text">Product description:</p>
-                                    <p class="card-text"><?= $product->product_description ?> </p>
-                                    <p class="card-text">Product Id: <?= $product->id ?> </p>
+                                    <p class="card-text"><?= e($product->product_description) ?> </p>
+                                    <p class="card-text">Product Id: <?= e($product->id) ?> </p>
                                     <?php if (isset($_SESSION['cart'])) : ?>
-                                    <div class="col text-center">
-                                        <a href="?id=<?= $product->id ?> " class="btn btn-outline-success">Add to Cart</a>
-                                    </div>
+                                        <div class="col text-center">
+                                            <a href="?id=<?= e($product->id) ?> " class="btn btn-outline-success">Add to Cart</a>
+                                        </div>
                                     <?php endif; ?>
                                 </div>
                             </div>

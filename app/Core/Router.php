@@ -19,7 +19,7 @@ class Router {
         $className = CN . $this->currentController . 'Controller';
         $this->currentController = new $className;
 
-        if (isset($url[1])) { //TODO: Redirect to error page if method not found
+        if (isset($url[1])) { //TODO: Catch router exception
             if (method_exists($this->currentController, $url[1] . 'Action')) {
                 $this->currentMethod = $url[1] . 'Action';
                 unset($url[1]);

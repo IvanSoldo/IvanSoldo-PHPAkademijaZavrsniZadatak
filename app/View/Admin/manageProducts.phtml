@@ -87,13 +87,13 @@
             </thead>
             <tbody>
             <tr class="text-center">
-                <td scope="row"><?= $product->id ?></td>
-                <td><?= $product->product_name ?></td>
-                <td>$<?= $product->product_price ?></td>
-                <td><?= $product->product_description ?></td>
+                <td scope="row"><?= e($product->id) ?></td>
+                <td><?= e($product->product_name) ?></td>
+                <td>$<?= e($product->product_price) ?></td>
+                <td><?= e($product->product_description) ?></td>
                 <form action="<?php echo URLROOT; ?>/Admin/manageProducts" method="get">
                     <td><?= ($product->product_active == 0) ? ' <button name="Activate" class="btn btn-outline-success">Activate</button>' : '<button name="Deactivate" class="btn btn-outline-danger">Deactivate</button>'; ?></td>
-                    <input type="hidden" class="form-control" name="id" value="<?= $product->id ?>">
+                    <input type="hidden" class="form-control" name="id" value="<?= e($product->id) ?>">
                 </form>
             </tr>
             <?php endforeach; ?>

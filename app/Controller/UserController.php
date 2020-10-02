@@ -185,10 +185,9 @@ class UserController extends Controller
 
             $this->cartService->updateCart($data);
 
-
             if (isset($_POST['buy'])) {
                 flash('register_success', 'Order submitted! Thank you!');
-                $this->cartService->Buy();
+                $this->cartService->buy();
             }
 
             $this->view('User/shoppingCart', $data);
@@ -209,6 +208,32 @@ class UserController extends Controller
         }
 
     }
+
+    public function checkoutAction() {
+
+        if ($this->isPost()) {
+            if (isset($_POST['buy'])) {
+                $this->cartService->buy();
+                flash('register_success', 'Order submitted! Thank you!');
+                header('location: ' . URLROOT);
+            }
+
+
+        } else {
+            if (empty($_SESSION['cart'])) {
+                header('location: ' . URLROOT);
+            } else {
+                $data = [
+                    'totalPrice'=>0,
+                    'customerInfo'=>$this->cartService->customerInfo()
+                ];
+
+                $this->view('User/checkout',$data);
+            }
+        }
+    }
+
+
 
 
 }

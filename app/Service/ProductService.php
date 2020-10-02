@@ -40,6 +40,28 @@ class ProductService {
         return $this->productRepository->getProducts();
     }
 
+    public function getSingleProduct($id, $productName='') {
+
+        if ($id == 0) {
+            if (isset($_POST['searchBar'])) {
+                $productName = $_POST['searchBar'];
+            }
+
+            if ($this->productRepository->doesProductExist($productName)) {
+                $id = $this->productRepository->getProductId($productName);
+                return $this->productRepository->getProduct($id);
+            }
+        }
+
+        if (!$this->productRepository->checkIfProductExistById($id)) {
+            header('location: ' . URLROOT);
+        } else {
+            return $this->productRepository->getProduct($id);
+        }
+    }
+
+
+
 
 
 }

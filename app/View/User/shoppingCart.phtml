@@ -19,19 +19,19 @@
                         <td data-th="Product">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <h6 class="nomargin"><?= unserialize($product)->product_name ?></h6>
-                                    <p><?= unserialize($product)->product_description ?></p>
+                                    <h6 class="nomargin"><?= e(unserialize($product)->product_name) ?></h6>
+                                    <p><?= e(unserialize($product)->product_description) ?></p>
                                 </div>
                             </div>
                         </td>
                         <td data-th="Price" class="text-right hidden-xs">
-                            $<?= unserialize($product)->product_price ?></td>
+                            $<?= e(unserialize($product)->product_price) ?></td>
                         <td data-th="Quantity" class="text-right">
                             <form action="<?php echo URLROOT; ?>/User/shoppingCart" method="post">
                                 <div class="form-group">
                                     <div>
-                                        <input type="number" min="1" max="999" class="form-control" name="quantity" value="<?=unserialize($product)->quantity ?>">
-                                        <input type="hidden" class="form-control" name="id" value="<?= unserialize($product)->id ?>">
+                                        <input type="number" min="1" max="999" class="form-control" name="quantity" value="<?=e(unserialize($product)->quantity) ?>">
+                                        <input type="hidden" class="form-control" name="id" value="<?= e(unserialize($product)->id) ?>">
                                         <div class="m-md-1">
                                             <input type="submit" name="changeQuantity" value="Change Quantity" class="btn btn-outline-success">
                                         </div>
@@ -44,7 +44,7 @@
 
                         </td>
                         <td data-th="Subtotal" class="text-right">
-                            $<?= unserialize($product)->product_price * unserialize($product)->quantity ?></td>
+                            $<?= e(unserialize($product)->product_price) * e(unserialize($product)->quantity) ?></td>
                         <?php $data['totalPrice'] += unserialize($product)->product_price * unserialize($product)->quantity ?>
                     </tr>
                     </tbody>
@@ -54,7 +54,7 @@
                     <td></td>
                     <td class="hidden-xs" colspan="1"></td>
                     <td class="text-right">Total</td>
-                    <td class="text-right"><strong>$<?= $data['totalPrice'] ?></strong></td>
+                    <td class="text-right"><strong>$<?= e($data['totalPrice']) ?></strong></td>
                     <td></td>
                 </tr>
                 <tr class="no-border">
@@ -63,11 +63,9 @@
                     <td></td>
                     <td colspan="2">
                         <div class="col">
-                            <form action="<?php echo URLROOT; ?>/User/shoppingCart" method="post">
-                                <?php if(!empty($_SESSION['cart'])) : ?>
-                                <input type="submit" name="buy" value="Buy" class="btn btn-success">
-                                <?php endif; ?>
-                            </form>
+                            <?php if(!empty($_SESSION['cart'])) : ?>
+                                <a href="<?php echo URLROOT; ?>/User/checkout" class="btn btn-outline-success">Checkout</a>
+                            <?php endif; ?>
                         </div>
                     </td>
                 </tr>

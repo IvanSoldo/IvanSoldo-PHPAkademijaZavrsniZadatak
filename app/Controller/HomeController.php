@@ -3,27 +3,19 @@
 namespace App\Controller;
 
 use App\Core\Controller;
-
-use App\Repository\OrderRepository;
-use App\Service\AdminService;
 use App\Service\CartService;
 use App\Service\ProductService;
-
-
-//TODO: add htmlspeacialchars to input fields/textarea/limit text length
-//TODO: Carosel pictures not loading when method from HomeController isnt found
 
 
 class HomeController extends Controller{
 
     private $productService;
-    private $adminService;
     private $cartService;
 
     public function __construct() {
         $this->productService = new ProductService();
-        $this->adminService = new AdminService();
         $this->cartService = new CartService();
+
     }
 
     public function indexAction() {
@@ -46,7 +38,7 @@ class HomeController extends Controller{
 
         $this->cartService->getProductId();
 
-        $data['id'] = 2;
+        $data['id'] = 1;
         $data = $this->productService->getProductsFromCategory($data);
         $this->view('Home/diningRoom', $data);
     }
@@ -55,7 +47,7 @@ class HomeController extends Controller{
 
         $this->cartService->getProductId();
 
-        $data['id'] = 3;
+        $data['id'] = 2;
         $data = $this->productService->getProductsFromCategory($data);
         $this->view('Home/garden', $data);
     }
@@ -64,13 +56,22 @@ class HomeController extends Controller{
 
         $this->cartService->getProductId();
 
-        $data['id'] = 1;
+        $data['id'] = 3;
         $data = $this->productService->getProductsFromCategory($data);
         $this->view('Home/livingRoom', $data);
     }
 
+    public function productPageAction($id){
 
+        $product = $this->productService->getSingleProduct($id);
+        $data = [
+          'product'=>$product
+        ];
 
+        $this->cartService->getProductId();
+
+        $this->view('Home/productPage',$data);
+    }
 
 
 }

@@ -108,7 +108,7 @@ class UserRepository {
         return $user;
     }
 
-    
+
 
     public function updatePassword($password, $username) {
 

@@ -48,27 +48,20 @@ class OrderRepository
 
     public function getAllOrders()
     {
-
-        /*$list = [];
-        $orderList= [];
+        $orders = [];
         $db = Database::getInstance();
-        $statement = $db->prepare("select o.id, concat(u.last_name, ' ', u.first_name) as full_name,
-       p.product_name,
-       op.quantity,
-       (op.quantity * p.product_price) as total_price from user u
-         inner join `order` o on u.id = o.user_id
-         inner join order_product op on o.id = op.order_id
-         inner join product p on op.product_id = p.id;");
+        $statement = $db->prepare('select o.id, o.order_date, concat (u.last_name, " ", u.first_name) as full_name
+                                            from `order` o inner join user u on o.user_id = u.id order by o.order_date;');
         $statement->execute();
-        $orders = $statement->fetchAll();
-        foreach ($orders as $order) {
-            array_push($list, $order);
+        foreach ($statement->fetchAll() as $order) {
+            $orders[] = new Order([
+                'id'=>$order->id,
+                'orderDate'=>$order->order_date,
+                'fullName'=>$order->full_name
+            ]);
         }
-
-        return $list;*/
-
+        return $orders;
     }
-
 
 
 }

@@ -5,22 +5,25 @@ namespace App\Service;
 
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 
 class CartService
 {
 
     private $productRepository;
     private $orderRepository;
+    private $userRepository;
 
     public function __construct()
     {
 
         $this->productRepository = new ProductRepository();
         $this->orderRepository = new OrderRepository();
+        $this->userRepository = new UserRepository();
 
     }
 
-    public function getProductId() //TODO:Wrap every if in method
+    public function getProductId()
     {
 
         if (isset($_SESSION['cart'])) {
@@ -37,12 +40,16 @@ class CartService
     }
 
     private function changeQuantityOfProduct($data) {
-
+        $_SESSION['cart'] = array_values($_SESSION['cart']);
         for ($i = 0; $i < count($_SESSION['cart']); $i++) {
             $product = unserialize($_SESSION['cart'][$i]);
-            if ($product->getData('id') == $data['productId']) {
-                $product->setData('quantity', $data['productQuantity']);
-                $_SESSION['cart'][$i] = serialize($product);
+            if (is_numeric($data['productQuantity'])) {
+                if ($product->getData('id') == $data['productId']) {
+                    if ($data['productQuantity'] >= 0 && $data['productQuantity'] <= 999) {
+                        $product->setData('quantity', $data['productQuantity']);
+                        $_SESSION['cart'][$i] = serialize($product);
+                    }
+                }
             }
         }
 
@@ -64,10 +71,25 @@ class CartService
 
     }
 
-    public function Buy() {
-        $this->orderRepository->insertOrder();
-        $_SESSION['cart'] = array();
 
+    public function customerInfo() {
+        return $this->userRepository->getUserByUsername($_SESSION['username']);
+    }
+
+
+    public function buy() {
+
+        $isValid = true;
+        foreach ($_SESSION['cart'] as $product) {
+            $product = unserialize($product);
+            if ($product->quantity < 1) {
+                $isValid = false;
+            }
+        }
+        if ($isValid) {
+            $this->orderRepository->insertOrder();
+            $_SESSION['cart'] = array();
+        }
 
     }
 
