@@ -16,16 +16,16 @@
                 <?php foreach ($_SESSION['cart'] as $product): ?>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0"><?= unserialize($product)->product_name ?> </h6>
-                        <small class="text-muted">Quantity: <?=unserialize($product)->quantity ?></small>
+                        <h6 class="my-0"><?= e(unserialize($product)->product_name) ?> </h6>
+                        <small class="text-muted">Quantity: <?=e(unserialize($product)->quantity) ?></small>
                     </div>
-                    <span class="text-muted">$<?= unserialize($product)->product_price * unserialize($product)->quantity ?></span>
+                    <span class="text-muted">$<?= e(unserialize($product)->product_price) * e(unserialize($product)->quantity) ?></span>
                 </li>
-                <?php $data['totalPrice'] += unserialize($product)->product_price * unserialize($product)->quantity ?>
+                <?php $data['totalPrice'] += e(unserialize($product)->product_price) * e(unserialize($product)->quantity) ?>
                 <?php endforeach; ?>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (USD)</span>
-                    <strong>$<?=$data['totalPrice']?></strong>
+                    <strong>$<?=e($data['totalPrice'])?></strong>
                 </li>
             </ul>
             <div class="text-center">
@@ -42,17 +42,17 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="firstName">First name</label>
-                    <p class="font-weight-bold"><?=$data['customerInfo']->getData('firstname') ?></p>
+                    <p class="font-weight-bold"><?=e($data['customerInfo']->getData('firstname')) ?></p>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="lastName">Last name</label>
-                    <p class="font-weight-bold"><?=$data['customerInfo']->getData('lastname') ?></p>
+                    <p class="font-weight-bold"><?=e($data['customerInfo']->getData('lastname')) ?></p>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="address">Address</label>
-                <p class="font-weight-bold"><?=$data['customerInfo']->getData('address') . ' ,'. $data['customerInfo']->getData('postalCode') . ' ' . $data['customerInfo']->getData('city')  ?></p>
+                <p class="font-weight-bold"><?=e($data['customerInfo']->getData('address')) . ' ,'. e($data['customerInfo']->getData('postalCode')) . ' ' . e($data['customerInfo']->getData('city'))  ?></p>
             </div>
 
 

@@ -11,12 +11,12 @@
                                      src="data:image/jpeg;base64, <?php echo base64_encode($data['product']->product_picture) ?> "
                                      alt=""></a>
                     <div class="card-body text-center">
-                        <h3 class="card-title"><?= $data['product']->product_name ?></h3>
-                        <h4>$<?= $data['product']->product_price ?></h4>
-                        <p class="card-text"><?= $data['product']->product_description ?></p>
+                        <h3 class="card-title"><?= e($data['product']->product_name) ?></h3>
+                        <h4>$<?= e($data['product']->product_price) ?></h4>
+                        <p class="card-text"><?= e($data['product']->product_description) ?></p>
                         <?php if (isset($_SESSION['cart'])) : ?>
                             <div class="col">
-                                <a href="?id=<?= $data['product']->id ?> " class="btn btn-outline-success">Add to Cart</a>
+                                <a href="?id=<?= e($data['product']->id) ?> " class="btn btn-outline-success">Add to Cart</a>
                             </div>
                         <?php endif; ?>
                         <br>
