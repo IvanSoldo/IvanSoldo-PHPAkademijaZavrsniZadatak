@@ -8,32 +8,28 @@ use App\Service\AdminService;
 use App\Service\ProductService;
 use App\Service\UserService;
 
+
 class AdminController extends Controller
 {
-
     private $userService;
     private $adminService;
     private $productService;
 
     public function __construct()
     {
+        parent::__construct();
         $this->userService = new UserService();
         $this->adminService = new AdminService();
         $this->productService = new ProductService();
-
     }
 
     public function indexAction()
     {
-
-        if(!array_key_exists('role', $_SESSION)) {//TODO: refactor to method
-            header('location: ' . URLROOT);
-        } else if ($_SESSION['role'] != 'admin') {
-            header('location: ' . URLROOT);
-        } else {
+        if ($this->auth->isLoggedIn() && $this->auth->isAdmin()) {
             $this->view('Admin/index');
+        } else {
+            header('location: ' . URLROOT);
         }
-
     }
 
     public function addAdminAction()
@@ -70,7 +66,8 @@ class AdminController extends Controller
                 $this->view('Admin/addAdmin', $data);
             }
 
-        } else {
+        }
+        if ($this->isGet()) {
             $data = [
                 'email' => '',
                 'username' => '',
@@ -92,18 +89,16 @@ class AdminController extends Controller
                 'addressError' => ''
             ];
 
-            if(!array_key_exists('role', $_SESSION)) {
-                header('location: ' . URLROOT);
-
-            } else if ($_SESSION['role'] != 'admin') {
-                header('location: ' . URLROOT);
+            if ($this->auth->isLoggedIn() && $this->auth->isAdmin()) {
+                $this->view('Admin/addAdmin', $data);
             } else {
-                $this->view('Admin/addAdmin',$data);
+                header('location: ' . URLROOT);
             }
         }
     }
 
-    public function manageProductsAction() {
+    public function manageProductsAction()
+    {
 
         if ($this->isPost()) {
 
@@ -111,19 +106,19 @@ class AdminController extends Controller
             $categories = $this->adminService->isRadioButtonSet($categories);
 
             $data = [
-                'productName'=> trim(Request::getPostParam('productName')),
-                'productPrice'=> trim(Request::getPostParam('productPrice')),
-                'productDescription'=>trim(Request::getPostParam('productDescription')),
-                'productImageSize'=>$_FILES['productImage']['size'],
-                'productImageBlob' =>$_FILES['productImage']['tmp_name'],
-                'productImageErr' =>$_FILES['productImage']['error'],
+                'productName' => trim(Request::getPostParam('productName')),
+                'productPrice' => trim(Request::getPostParam('productPrice')),
+                'productDescription' => trim(Request::getPostParam('productDescription')),
+                'productImageSize' => $_FILES['productImage']['size'],
+                'productImageBlob' => $_FILES['productImage']['tmp_name'],
+                'productImageErr' => $_FILES['productImage']['error'],
                 'chosenCategories' => $categories,
-                'categoryArr' =>$this->adminService->getCategories(),
-                'productNameError'=> '',
-                'productPriceError'=> '',
-                'productCategoryError'=> '',
-                'productImageError'=>'',
-                'productsArray'=>$this->productService->getProducts(),
+                'categoryArr' => $this->adminService->getCategories(),
+                'productNameError' => '',
+                'productPriceError' => '',
+                'productCategoryError' => '',
+                'productImageError' => '',
+                'productsArray' => $this->productService->getProducts(),
             ];
 
             $data = $this->adminService->checkProductData($data);
@@ -134,63 +129,47 @@ class AdminController extends Controller
             } else {
                 $this->view('Admin/manageProducts', $data);
             }
-
-
-
-        } else {
+        }
+        if ($this->isGet()) {
 
             $data = [
-                'productName'=> '',
-                'productPrice'=> '',
-                'productDescription'=>'',
-                'chosenCategories' =>'',
-                'categoryArr' =>$this->adminService->getCategories(),
-                'productNameError'=> '',
-                'productPriceError'=> '',
-                'productCategoryError'=> '',
-                'productImageError'=>'',
-                'productsArray'=>$this->productService->getProducts()
+                'productName' => '',
+                'productPrice' => '',
+                'productDescription' => '',
+                'chosenCategories' => '',
+                'categoryArr' => $this->adminService->getCategories(),
+                'productNameError' => '',
+                'productPriceError' => '',
+                'productCategoryError' => '',
+                'productImageError' => '',
+                'productsArray' => $this->productService->getProducts()
             ];
-
             if (!empty($_GET['id'])) {
                 $id = $_GET['id'];
                 $this->adminService->changeProductStatus($data['productsArray'], $id);
-                header('location: ' . URLROOT.'/Admin/manageProducts');
+                header('location: ' . URLROOT . '/Admin/manageProducts');
             }
 
-            if(!array_key_exists('role', $_SESSION)) {
-                header('location: ' . URLROOT);
-
-            } else if ($_SESSION['role'] != 'admin') {
-                header('location: ' . URLROOT);
-            } else {
+            if ($this->auth->isLoggedIn() && $this->auth->isAdmin()) {
                 $this->view('Admin/manageProducts', $data);
+            } else {
+                header('location: ' . URLROOT);
             }
         }
-
     }
-
-    public function ordersAction() {
-
+    public function ordersAction()
+    {
         if ($this->isPost()) {
-
             $this->adminService->printAllOrders();
-
-        } else {
-
-            if(!array_key_exists('role', $_SESSION)) {
-                header('location: ' . URLROOT);
-
-            } else if ($_SESSION['role'] != 'admin') {
-                header('location: ' . URLROOT);
-            } else {
-
+        }
+        if ($this->isGet()) {
+            if ($this->auth->isLoggedIn() && $this->auth->isAdmin()) {
                 $data = $this->adminService->getAllOrders();
                 $this->view('Admin/orders', $data);
+            } else {
+                header('location: ' . URLROOT);
             }
         }
-
-
     }
 
 }

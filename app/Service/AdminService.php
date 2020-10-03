@@ -97,7 +97,6 @@ class AdminService
 
     public function changeProductStatus($data, $id)
     {
-
         $status = 1;
         if (isset($_GET['Activate'])) {
             for ($i = 0; $i < count($data); $i++) {
@@ -106,7 +105,6 @@ class AdminService
                 }
             }
         }
-
         if (isset($_GET['Deactivate'])) {
             for ($i = 0; $i < count($data); $i++) {
                 if ($data[$i]->id == $id) {
@@ -114,7 +112,6 @@ class AdminService
                     $this->productRepository->changeStatus($data[$i]->id, $status);
                 }
             }
-
         }
     }
 

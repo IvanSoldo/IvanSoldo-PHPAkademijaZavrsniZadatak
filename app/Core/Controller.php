@@ -4,7 +4,11 @@ namespace App\Core;
 
 class Controller {
 
-    //TODO: add default indexAction
+    protected $auth;
+
+    public function __construct() {
+        $this->auth = new Auth();
+    }
 
     public function view($view, $data =[]) {
 
