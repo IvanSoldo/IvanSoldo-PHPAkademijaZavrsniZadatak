@@ -160,5 +160,18 @@ class ProductRepository {
 
     }
 
+    public function getNewProducts() {
+        $list = [];
+        $db = Database::getInstance();
+        $statement = $db->prepare('SELECT * FROM `product` where product_active = 1 order by id DESC limit 3;');
+        $statement->execute();
+        $products = $statement->fetchAll();
+        foreach ($products as $product) {
+            array_push($list, $product);
+        }
+        return $list;
+
+    }
+
 
 }

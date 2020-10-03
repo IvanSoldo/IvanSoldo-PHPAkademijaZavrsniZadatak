@@ -60,6 +60,10 @@ class ProductService {
         }
     }
 
+    public function getNewProducts() {
+        return $this->productRepository->getNewProducts();
+    }
+
 
 
 
