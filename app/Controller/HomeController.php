@@ -13,9 +13,9 @@ class HomeController extends Controller{
     private $cartService;
 
     public function __construct() {
+        parent::__construct();
         $this->productService = new ProductService();
         $this->cartService = new CartService();
-
     }
 
     public function indexAction() {
