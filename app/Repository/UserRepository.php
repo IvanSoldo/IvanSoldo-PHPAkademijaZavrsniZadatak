@@ -50,7 +50,7 @@ class UserRepository {
 
     private function getAddressId($data) {
         $db = Database::getInstance();
-        $statement = $db->prepare('SELECT id from address where city_name = :city && postal_code = :postalCode && address = :address limit 1;');
+        $statement = $db->prepare('SELECT id from address where city_name = :city && postal_code = :postalCode && address = :address ORDER BY ID DESC limit 1;');
         $statement->bindValue('city', $data['city']);
         $statement->bindValue('postalCode', $data['postalCode']);
         $statement->bindValue('address',$data['address']);

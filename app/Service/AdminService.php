@@ -130,10 +130,10 @@ class AdminService
             header('Content-Type: text/csv; charset=utf-8');
             header('Content-Disposition: attachment; filename=data.csv');
             $output = fopen('php://output', 'w');
-            fputcsv($output, array('order id','order date','customer name'),";");
+            fputcsv($output, array('order id','order date','customer name', 'address'),";");
 
             for ($i=0;$i<count($orders);$i++) {
-                $csv[$i] = array($orders[$i]->id,$orders[$i]->orderDate,$orders[$i]->fullName);
+                $csv[$i] = array($orders[$i]->id,$orders[$i]->orderDate,$orders[$i]->fullName,$orders[$i]->orderAddress);
                 fputcsv($output, $csv[$i], ";");
             }
             fclose($output);

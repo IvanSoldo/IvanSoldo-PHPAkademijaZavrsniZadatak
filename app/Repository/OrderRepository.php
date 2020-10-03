@@ -50,14 +50,17 @@ class OrderRepository
     {
         $orders = [];
         $db = Database::getInstance();
-        $statement = $db->prepare('select o.id, o.order_date, concat (u.last_name, " ", u.first_name) as full_name
-                                            from `order` o inner join user u on o.user_id = u.id order by o.order_date;');
+        $statement = $db->prepare('select o.id, o.order_date, concat (u.last_name, " ", u.first_name) as full_name, a.address, a.postal_code, a.city_name
+                                            from `order` o
+                                                inner join user u on o.user_id = u.id
+                                                inner join address a on u.address_id = a.id;');
         $statement->execute();
         foreach ($statement->fetchAll() as $order) {
             $orders[] = new Order([
                 'id'=>$order->id,
                 'orderDate'=>$order->order_date,
-                'fullName'=>$order->full_name
+                'fullName'=>$order->full_name,
+                'orderAddress'=> $order->address . ', ' . $order->postal_code . ' ' . $order->city_name
             ]);
         }
         return $orders;
