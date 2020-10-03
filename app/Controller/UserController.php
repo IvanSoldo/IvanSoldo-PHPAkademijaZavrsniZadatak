@@ -139,37 +139,10 @@ class UserController extends Controller
 
     public function settingsAction()
     {
-        if ($this->isPost()) {
-            $data = [
-                'password' => trim(Request::getPostParam('password')),
-                'confirmPassword' => trim(Request::getPostParam('confirmPassword')),
-                'passwordError' => '',
-                'confirmPasswordError' => ''
-            ];
-
-            $data = $this->userService->checkSettingsData($data);
-            if ($this->userService->isSettingsDataValid($data)) {
-                $this->userService->changePassword($data);
-                flash('register_success', 'Password changed!');
-                header('location: ' . URLROOT . '/User/settings');
-            } else {
-                $this->view('User/settings', $data);
-            }
-
+        if(!array_key_exists('role', $_SESSION)) {
+            header('location: ' . URLROOT);
         } else {
-
-            $data = [
-                'password' => '',
-                'confirmPassword' => '',
-                'passwordError' => '',
-                'confirmPasswordError' => ''
-            ];
-            if (!array_key_exists('role', $_SESSION)) {
-                header('location: ' . URLROOT);
-
-            } else {
-                $this->view('User/settings', $data);
-            }
+            $this->view('User/settings');
         }
     }
 
@@ -231,6 +204,91 @@ class UserController extends Controller
                 $this->view('User/checkout',$data);
             }
         }
+    }
+
+    public function changePasswordAction() {
+
+        {
+            if ($this->isPost()) {
+                $data = [
+                    'password' => trim(Request::getPostParam('password')),
+                    'confirmPassword' => trim(Request::getPostParam('confirmPassword')),
+                    'passwordError' => '',
+                    'confirmPasswordError' => ''
+                ];
+
+                $data = $this->userService->checkChangePasswordData($data);
+                if ($this->userService->isChangePasswordDataValid($data)) {
+                    $this->userService->changePassword($data);
+                    flash('register_success', 'Password changed!');
+                    header('location: ' . URLROOT);
+                } else {
+                    $this->view('User/changePassword', $data);
+                }
+
+            } else {
+
+                $data = [
+                    'password' => '',
+                    'confirmPassword' => '',
+                    'passwordError' => '',
+                    'confirmPasswordError' => ''
+                ];
+                if (!array_key_exists('role', $_SESSION)) {
+                    header('location: ' . URLROOT);
+
+                } else {
+                    $this->view('User/changePassword', $data);
+                }
+            }
+        }
+    }
+
+    public function changeAddressAction() {
+
+        if ($this->isPost()) {
+            $data = [
+                'city' => trim(Request::getPostParam('city')),
+                'postalCode' => trim(Request::getPostParam('postalCode')),
+                'address' => trim(Request::getPostParam('address')),
+                'cityError'=>'',
+                'postalCodeError'=>'',
+                'addressError'=>''
+            ];
+
+            $data = $this->userService->checkChangeAddress($data);
+            if ($this->userService->isChangeAddressDataValid($data)) {
+                $this->userService->changeAddress($data);
+                flash('register_success','Address changed' );
+                header('location: ' . URLROOT);
+            } else {
+                $this->view('User/changeAddress',$data);
+            }
+
+
+
+
+        } else {
+            $data = [
+                'city' => '',
+                'postalCode' => '',
+                'address' => '',
+                'cityError'=>'',
+                'postalCodeError'=>'',
+                'addressError'=>''
+            ];
+
+            if (!array_key_exists('role', $_SESSION)) {
+                header('location: ' . URLROOT);
+
+            } else {
+                $this->view('User/changeAddress',$data);
+            }
+
+        }
+
+
+
     }
 
 

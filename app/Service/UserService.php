@@ -146,7 +146,7 @@ class UserService
         header('location: ' . URLROOT . '/User/login');
     }
 
-    public function checkSettingsData($data) {
+    public function checkChangePasswordData($data) {
 
         if (empty($data['password'])) {
             $data['passwordError'] = 'Please enter password';
@@ -166,7 +166,7 @@ class UserService
         return $data;
     }
 
-    public function isSettingsDataValid($data) {
+    public function isChangePasswordDataValid($data) {
         if (empty($data['passwordError']) && empty($data['confirmPasswordError'])) {
             return true;
         }
@@ -188,7 +188,37 @@ class UserService
         $this->userRepository->insertUser($data);
     }
 
+    public function checkChangeAddress($data) {
+        if (empty($data['city'])) {
+            $data['cityError'] = 'Please enter city';
+        }
 
+        if (empty($data['postalCode'])) {
+            $data['postalCodeError'] = 'Please enter postalCode';
+        } else {
+            if (strlen($data['postalCode']) != 5) {
+                $data['postalCodeError'] = 'Please enter valid postal code';
+            }
+        }
+
+        if (empty($data['address'])) {
+            $data['addressError'] = 'Please enter address';
+        }
+        return $data;
+    }
+
+
+    public function isChangeAddressDataValid($data) {
+        if (empty($data['cityError']) && empty($data['postalCodeError']) && empty($data['addressError'])) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public function changeAddress($data) {
+        $this->userRepository->updateAddress($data);
+    }
 
 
 }
