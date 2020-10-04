@@ -18,12 +18,17 @@ class UserController extends Controller
         $this->userService = new UserService();
         $this->cartService = new CartService();
     }
+
     public function indexAction()
     {
         header('location: ' . URLROOT);
     }
+
     public function registerAction()
     {
+        if ($this->auth->isLoggedIn()) {
+            header('location: ' . URLROOT);
+        }
         if ($this->isPost()) {
             $data = [
                 'email' => trim(Request::getPostParam('email')),
@@ -75,16 +80,16 @@ class UserController extends Controller
                 'postalCodeError' => '',
                 'addressError' => ''
             ];
+            $this->view('User/register', $data);
 
-            if ($this->auth->isLoggedIn()) {
-                header('location: ' . URLROOT);
-            } else {
-                $this->view('User/register', $data);
-            }
         }
     }
     public function loginAction()
     {
+        if ($this->auth->isLoggedIn()) {
+            header('location: ' . URLROOT);
+        }
+
         if ($this->isPost()) {
             $data = [
                 'username' => trim(Request::getPostParam('username')),
@@ -107,17 +112,15 @@ class UserController extends Controller
                 'usernameError' => '',
                 'passwordError' => ''
             ];
-            if ($this->auth->isLoggedIn()) {
-                header('location: ' . URLROOT);
-            } else {
-                $this->view('User/login', $data);
-            }
+            $this->view('User/login', $data);
         }
     }
+
     public function logoutAction()
     {
         $this->userService->logout();
     }
+
     public function settingsAction()
     {
         if ($this->auth->isLoggedIn()) {
@@ -126,8 +129,13 @@ class UserController extends Controller
             header('location: ' . URLROOT);
         }
     }
+
     public function shoppingCartAction()
     {
+        if (!$this->auth->isLoggedIn()) {
+            header('location: ' . URLROOT);
+        }
+
         if ($this->isPost()) {
             $data = [
                 'totalPrice' => 0,
@@ -141,7 +149,7 @@ class UserController extends Controller
             }
             $this->view('User/shoppingCart', $data);
         }
-        if($this->isGet()) {
+        if ($this->isGet()) {
             $data = [
                 'totalPrice' => 0,
                 'productId' => '',
@@ -154,7 +162,12 @@ class UserController extends Controller
             }
         }
     }
-    public function checkoutAction() {
+
+    public function checkoutAction()
+    {
+        if (!$this->auth->isLoggedIn()) {
+            header('location: ' . URLROOT);
+        }
 
         if ($this->isPost()) {
             if (isset($_POST['buy'])) {
@@ -163,70 +176,73 @@ class UserController extends Controller
                 header('location: ' . URLROOT);
             }
         }
-        if($this->isGet()) {
+        if ($this->isGet()) {
             if (empty($_SESSION['cart'])) {
                 header('location: ' . URLROOT);
             } else {
                 $data = [
-                    'totalPrice'=>0,
-                    'customerInfo'=>$this->cartService->customerInfo()
+                    'totalPrice' => 0,
+                    'customerInfo' => $this->cartService->customerInfo()
                 ];
-                $this->view('User/checkout',$data);
+                $this->view('User/checkout', $data);
             }
         }
     }
-    public function changePasswordAction() {
-        {
-            if ($this->isPost()) {
-                $data = [
-                    'password' => trim(Request::getPostParam('password')),
-                    'confirmPassword' => trim(Request::getPostParam('confirmPassword')),
-                    'passwordError' => '',
-                    'confirmPasswordError' => ''
-                ];
-                $data = $this->userService->checkChangePasswordData($data);
-                if ($this->userService->isChangePasswordDataValid($data)) {
-                    $this->userService->changePassword($data);
-                    flash('register_success', 'Password changed!');
-                    header('location: ' . URLROOT);
-                } else {
-                    $this->view('User/changePassword', $data);
-                }
-            }
-            if ($this->isGet()) {
-                $data = [
-                    'password' => '',
-                    'confirmPassword' => '',
-                    'passwordError' => '',
-                    'confirmPasswordError' => ''
-                ];
-                if ($this->auth->isLoggedIn()) {
-                    $this->view('User/changePassword', $data);
-                } else {
-                    header('location: ' . URLROOT);
-                }
-            }
-        }
-    }
-    public function changeAddressAction() {
 
+    public function changePasswordAction()
+    {
+        if (!$this->auth->isLoggedIn()) {
+            header('location: ' . URLROOT);
+        }
+        if ($this->isPost()) {
+            $data = [
+                'password' => trim(Request::getPostParam('password')),
+                'confirmPassword' => trim(Request::getPostParam('confirmPassword')),
+                'passwordError' => '',
+                'confirmPasswordError' => ''
+            ];
+            $data = $this->userService->checkChangePasswordData($data);
+            if ($this->userService->isChangePasswordDataValid($data)) {
+                $this->userService->changePassword($data);
+                flash('register_success', 'Password changed!');
+                header('location: ' . URLROOT);
+            } else {
+                $this->view('User/changePassword', $data);
+            }
+        }
+        if ($this->isGet()) {
+            $data = [
+                'password' => '',
+                'confirmPassword' => '',
+                'passwordError' => '',
+                'confirmPasswordError' => ''
+            ];
+
+            $this->view('User/changePassword', $data);
+        }
+    }
+
+    public function changeAddressAction()
+    {
+        if (!$this->auth->isLoggedIn()) {
+            header('location: ' . URLROOT);
+        }
         if ($this->isPost()) {
             $data = [
                 'city' => trim(Request::getPostParam('city')),
                 'postalCode' => trim(Request::getPostParam('postalCode')),
                 'address' => trim(Request::getPostParam('address')),
-                'cityError'=>'',
-                'postalCodeError'=>'',
-                'addressError'=>''
+                'cityError' => '',
+                'postalCodeError' => '',
+                'addressError' => ''
             ];
-
             $data = $this->userService->checkChangeAddress($data);
             if ($this->userService->isChangeAddressDataValid($data)) {
                 $this->userService->changeAddress($data);
-                flash('register_success','Address changed' );
+                flash('register_success', 'Address changed');
                 header('location: ' . URLROOT);
             } else {
-                $this->view('User/changeAddress',$data);
+                $this->view('User/changeAddress', $data);
             }
         }
         if ($this->isGet()) {
@@ -234,15 +250,12 @@ class UserController extends Controller
                 'city' => '',
                 'postalCode' => '',
                 'address' => '',
-                'cityError'=>'',
-                'postalCodeError'=>'',
-                'addressError'=>''
+                'cityError' => '',
+                'postalCodeError' => '',
+                'addressError' => ''
             ];
-            if ($this->auth->isLoggedIn()) {
-                $this->view('User/changeAddress',$data);
-            } else {
-                header('location: ' . URLROOT);
-            }
+            $this->view('User/changeAddress', $data);
+
         }
     }
 }

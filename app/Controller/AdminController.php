@@ -18,23 +18,22 @@ class AdminController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->userService = new UserService();
-        $this->adminService = new AdminService();
-        $this->productService = new ProductService();
+        if (!$this->auth->isAdmin()) {
+            header('location: ' . URLROOT);
+        } else {
+            $this->userService = new UserService();
+            $this->adminService = new AdminService();
+            $this->productService = new ProductService();
+        }
     }
 
     public function indexAction()
     {
-        if ($this->auth->isLoggedIn() && $this->auth->isAdmin()) {
-            $this->view('Admin/index');
-        } else {
-            header('location: ' . URLROOT);
-        }
+        $this->view('Admin/index');
     }
 
     public function addAdminAction()
     {
-
         if ($this->isPost()) {
             $data = [
                 'email' => trim(Request::getPostParam('email')),
@@ -56,7 +55,6 @@ class AdminController extends Controller
                 'postalCodeError' => '',
                 'addressError' => ''
             ];
-
             $data = $this->userService->checkRegisterData($data);
             if ($this->userService->isRegisterDataValid($data)) {
                 $this->adminService->addAdmin($data);
@@ -88,12 +86,7 @@ class AdminController extends Controller
                 'postalCodeError' => '',
                 'addressError' => ''
             ];
-
-            if ($this->auth->isLoggedIn() && $this->auth->isAdmin()) {
-                $this->view('Admin/addAdmin', $data);
-            } else {
-                header('location: ' . URLROOT);
-            }
+            $this->view('Admin/addAdmin', $data);
         }
     }
 
@@ -101,10 +94,8 @@ class AdminController extends Controller
     {
 
         if ($this->isPost()) {
-
             $categories = '';
             $categories = $this->adminService->isRadioButtonSet($categories);
-
             $data = [
                 'productName' => trim(Request::getPostParam('productName')),
                 'productPrice' => trim(Request::getPostParam('productPrice')),
@@ -120,7 +111,6 @@ class AdminController extends Controller
                 'productImageError' => '',
                 'productsArray' => $this->productService->getProducts(),
             ];
-
             $data = $this->adminService->checkProductData($data);
             if ($this->adminService->isProductDataValid($data)) {
                 $this->adminService->addProduct($data);
@@ -131,7 +121,6 @@ class AdminController extends Controller
             }
         }
         if ($this->isGet()) {
-
             $data = [
                 'productName' => '',
                 'productPrice' => '',
@@ -149,12 +138,7 @@ class AdminController extends Controller
                 $this->adminService->changeProductStatus($data['productsArray'], $id);
                 header('location: ' . URLROOT . '/Admin/manageProducts');
             }
-
-            if ($this->auth->isLoggedIn() && $this->auth->isAdmin()) {
-                $this->view('Admin/manageProducts', $data);
-            } else {
-                header('location: ' . URLROOT);
-            }
+            $this->view('Admin/manageProducts', $data);
         }
     }
     public function ordersAction()
@@ -163,12 +147,8 @@ class AdminController extends Controller
             $this->adminService->printAllOrders();
         }
         if ($this->isGet()) {
-            if ($this->auth->isLoggedIn() && $this->auth->isAdmin()) {
-                $data = $this->adminService->getAllOrders();
-                $this->view('Admin/orders', $data);
-            } else {
-                header('location: ' . URLROOT);
-            }
+            $data = $this->adminService->getAllOrders();
+            $this->view('Admin/orders', $data);
         }
     }
 
