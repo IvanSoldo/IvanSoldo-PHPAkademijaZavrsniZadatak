@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Model\User;
+use App\Repository\AddressRepository;
 use App\Repository\UserRepository;
 
 class UserService
@@ -10,12 +11,13 @@ class UserService
 
     private $userRepository;
     private $user;
-
+    private $addressRepository;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository();
         $this->user = new User();
+        $this->addressRepository = new AddressRepository();
     }
 
     public function checkRegisterData($data)
@@ -96,7 +98,7 @@ class UserService
     {
         $data['role'] = 3;
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        $this->userRepository->insertAddress($data);
+        $this->addressRepository->insertAddress($data);
         $this->userRepository->insertUser($data);
     }
 
@@ -143,6 +145,13 @@ class UserService
     {
         $_SESSION = array();
 
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time()-1800,
+            $params['path'], $params['domain'],
+            $params['secure'], $params['httponly']);
+        }
+        session_destroy();
         header('location: ' . URLROOT . '/User/login');
     }
 
@@ -180,14 +189,6 @@ class UserService
 
     }
 
-    public function addAdmin($data)
-    {
-        $data['role'] = 1;
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        $this->userRepository->insertAddress($data);
-        $this->userRepository->insertUser($data);
-    }
-
     public function checkChangeAddress($data) {
         if (empty($data['city'])) {
             $data['cityError'] = 'Please enter city';
@@ -207,7 +208,6 @@ class UserService
         return $data;
     }
 
-
     public function isChangeAddressDataValid($data) {
         if (empty($data['cityError']) && empty($data['postalCodeError']) && empty($data['addressError'])) {
             return true;
@@ -215,10 +215,8 @@ class UserService
         return false;
     }
 
-
     public function changeAddress($data) {
-        $this->userRepository->updateAddress($data);
+        $this->addressRepository->updateAddress($data);
     }
-
 
 }

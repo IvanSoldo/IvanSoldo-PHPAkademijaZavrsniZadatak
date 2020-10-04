@@ -41,11 +41,6 @@ class DataObject
         return $this->data;
     }
 
-    /**
-     * The $key parameter can be string or array.
-     * If $key is string, the attribute value will be overwritten by $value.
-     * If $key is an array, it will overwrite all the data in the object.
-     */
     public function setData($key, $value = null)
     {
         if ($key === (array)$key) {
@@ -76,12 +71,6 @@ class DataObject
         return $this;
     }
 
-    /**
-     * $this->setMyField($value) === $this->setData('my_field', $value)
-     *
-     * @param string $name
-     * @return string
-     */
     protected function underscore(string $name): string
     {
         return strtolower(trim(preg_replace('/([A-Z]|[0-9]+)/', "_$1", $name), '_'));

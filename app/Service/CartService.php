@@ -16,11 +16,9 @@ class CartService
 
     public function __construct()
     {
-
         $this->productRepository = new ProductRepository();
         $this->orderRepository = new OrderRepository();
         $this->userRepository = new UserRepository();
-
     }
 
     public function getProductId()

@@ -17,7 +17,6 @@ class ProductService {
         return $this->productRepository->getFilteredProducts();
     }
 
-    //returns array of products
     public function getProductsFromCategory($data) {
         $productList =[];
         $productIds = $this->productRepository->getProductFromCategory($data['id']);

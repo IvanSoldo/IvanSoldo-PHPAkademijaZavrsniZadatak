@@ -2,21 +2,25 @@
 
 namespace App\Service;
 
+use App\Repository\AddressRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 
 class AdminService
 {
 
     private $productRepository;
     private $orderRepository;
+    private $userRepository;
+    private $addressRepository;
 
     public function __construct()
     {
-
         $this->productRepository = new ProductRepository();
         $this->orderRepository = new OrderRepository();
-
+        $this->userRepository = new UserRepository();
+        $this->addressRepository = new AddressRepository();
     }
 
     public function checkProductData($data)
@@ -38,7 +42,6 @@ class AdminService
             } else {
                 $data['productPriceError'] = 'Price must be a number';
             }
-
         }
 
         if (empty($data['productDescription'])) {
@@ -136,9 +139,13 @@ class AdminService
             fclose($output);
 
         }
-
-
     }
 
-
+    public function addAdmin($data)
+    {
+        $data['role'] = 1;
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $this->addressRepository->insertAddress($data);
+        $this->userRepository->insertUser($data);
+    }
 }

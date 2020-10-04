@@ -59,7 +59,7 @@ class AdminController extends Controller
 
             $data = $this->userService->checkRegisterData($data);
             if ($this->userService->isRegisterDataValid($data)) {
-                $this->userService->addAdmin($data);
+                $this->adminService->addAdmin($data);
                 flash('register_success', 'New Admin added!');
                 $this->view('Admin/index');
             } else {

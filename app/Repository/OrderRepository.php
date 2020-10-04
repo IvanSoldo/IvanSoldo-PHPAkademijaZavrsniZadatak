@@ -8,16 +8,8 @@ use App\Model\Order;
 class OrderRepository
 {
 
-    private $order;
-
-    public function __construct()
-    {
-        $this->order = new Order();
-    }
-
     public function insertOrder()
     {
-
         $db = Database::getInstance();
         $statement = $db->prepare('insert into `order` (user_id) VALUE (:userId);');
         $statement->bindValue('userId', intval($_SESSION['userId']));
@@ -30,7 +22,6 @@ class OrderRepository
             $statement->bindValue('quantity', intval($product->quantity));
             $statement->execute();
         }
-
     }
 
     private function getOrderId()
@@ -65,7 +56,5 @@ class OrderRepository
         }
         return $orders;
     }
-
-
 }
 

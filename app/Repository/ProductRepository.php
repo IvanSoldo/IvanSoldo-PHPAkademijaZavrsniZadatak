@@ -7,16 +7,10 @@ use App\Model\Product;
 
 class ProductRepository {
 
-    private $product;
-
-    public function __construct() {
-
-    }
-
     public function doesProductExist($product)
     {
         $db = Database::getInstance();
-        $statement = $db->prepare('SELECT `product_name` FROM `product` where `product_name` = (?)', [$product]);
+        $statement = $db->prepare('SELECT `product_name` FROM `product` where `product_name` = (?) and product_active = 1', [$product]);
         $statement->execute([$product]);
         $fetched = $statement->rowCount();
         return (bool)$fetched;
@@ -67,7 +61,6 @@ class ProductRepository {
         return $list;
     }
 
-
     public function insertProduct($data) {
         $db=Database::getInstance();
         $statement = $db->prepare('insert into product (product_name, product_price, product_description, product_picture)
@@ -115,7 +108,6 @@ class ProductRepository {
 
     }
 
-
     public function getProduct($id) {
 
         $db = Database::getInstance();
@@ -136,8 +128,6 @@ class ProductRepository {
         }
         return $product;
     }
-
-
 
     private function getCategoryId($category)
     {
@@ -172,6 +162,4 @@ class ProductRepository {
         return $list;
 
     }
-
-
 }
